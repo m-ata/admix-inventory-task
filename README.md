@@ -1,2 +1,1 @@
-# admix-inventory-task
-Admix Inventory Task
+# Admix Inventory App
