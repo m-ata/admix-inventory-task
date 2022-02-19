@@ -3,7 +3,7 @@ import { Table, Card } from 'antd';
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { AppOutput } from './../../interfaces/AppOutput';
-import { StoreInfo } from './../../interfaces/StoreInfo';
+import { convertDate } from './../../utils/convertDate';
 
 const AppInventoryList = () => {
 
@@ -34,11 +34,13 @@ const AppInventoryList = () => {
           title: 'DATE ADDED',
           dataIndex: 'createdAt',
           key: 'createdAt',
+          render: (createdAt: string) => <span> {convertDate(createdAt)} </span>,
         },
         {
           title: 'UPDATED ON',
           dataIndex: 'updatedAt',
           key: 'updatedAt',
+          render: (updatedAt: string) => <span> {convertDate(updatedAt)} </span>
         },
         {
           title: 'AGE',
