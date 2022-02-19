@@ -21,9 +21,9 @@ const AppInventoryList = () => {
     const columns = [
         {
           title: 'APP TITLE & PUBLISHER',
-          dataIndex: 'googlePlayStoreInfo',
+          dataIndex: 'title',
           key: 'title',
-          render: (googlePlayStoreInfo: StoreInfo) => <AppTitlePublisher {...googlePlayStoreInfo} />,
+          render: (title: string, appData: AppOutput) => <AppTitlePublisher {...appData} />,
         },
         {
           title: 'DAILY AVAILS',
@@ -48,7 +48,7 @@ const AppInventoryList = () => {
         {
           title: 'CATEGORY',
           key: 'storeCategories',
-          dataIndex: 'storeCategories',
+          dataIndex: ['googlePlayStoreInfo' ,'genre'],
         },
       ];
 
@@ -56,7 +56,8 @@ const AppInventoryList = () => {
         <Card>
           <Table 
             columns={columns} 
-            dataSource={appList} 
+            dataSource={appList}
+            rowKey={'_id'}
         />
         </Card>
     )
