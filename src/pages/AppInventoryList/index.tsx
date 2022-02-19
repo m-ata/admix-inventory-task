@@ -49,8 +49,9 @@ const AppInventoryList = () => {
         },
         {
           title: 'AGE',
-          dataIndex: ['googlePlayStoreInfo' ,'contentRating'],
+          dataIndex: ['appStoreInfo' ,'contentRating'],
           key: 'contentRating',
+          render: (title: string, appData: AppOutput) => <span> { appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating } </span>
         },
         {
           title: 'CATEGORY',
