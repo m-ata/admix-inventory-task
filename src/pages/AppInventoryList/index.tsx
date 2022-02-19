@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Card } from 'antd';
+import {
+  MoreOutlined
+} from '@ant-design/icons';
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { AppOutput } from './../../interfaces/AppOutput';
@@ -53,6 +56,11 @@ const AppInventoryList = () => {
           title: 'CATEGORY',
           key: 'storeCategories',
           dataIndex: ['googlePlayStoreInfo' ,'genre'],
+        },
+        {
+          title: '',
+          key: 'more',
+          render: () => <MoreOutlined />
         },
       ];
 
