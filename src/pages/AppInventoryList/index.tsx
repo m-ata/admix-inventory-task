@@ -7,11 +7,11 @@ import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
-import { IFetchppRequestBody } from './../../interfaces';
+import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 
 const AppInventoryList = () => {
 
-  const [appList, setAppList] = useState<IAppOutput[]>([]);
+  const [appsData, setAppsData] = useState<IFetchResponseData>(null);
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>({ pageIndex: 0, pageSize: 5 });
 
   useEffect(() => {
@@ -20,7 +20,7 @@ const AppInventoryList = () => {
 
   const fetchAppList = async () => {
     const data = await fetchAdmixPlayInventory(requestBody);
-    setAppList(data);
+    setAppsData(data);
   }
 
     const columns: any = [
@@ -69,8 +69,13 @@ const AppInventoryList = () => {
         <Card>
           <Table 
             columns={columns} 
-            dataSource={appList}
+            dataSource={appsData?.items}
             rowKey={'_id'}
+            pagination={{
+              onChange: (page) => console.log(page),
+              pageSize: 5,
+              total: appsData?.totalCount
+          }}
         />
         </Card>
     )

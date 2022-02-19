@@ -10,7 +10,7 @@ export const fetchAdmixPlayInventory = async (body: IFetchppRequestBody) => {
               'admix-api-key': '63c412d9-11c2-4a7f-9d2b-8a6aafc9c596'
             }
         })
-        return response?.data?.data?.items;
+        return response?.data?.data;
       } catch (err) {
         console.log('err ', err)
       }
