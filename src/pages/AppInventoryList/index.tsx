@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Tag, Space, Card } from 'antd';
+import { Table, Card } from 'antd';
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
+import { AppOutput } from './../../interfaces/AppOutput';
+import { StoreInfo } from './../../interfaces/StoreInfo';
 
 const AppInventoryList = () => {
 
-  const [appList, setAppList] = useState([]);
+  const [appList, setAppList] = useState<AppOutput[]>([]);
 
   useEffect(() => {
     fetchAppList();
@@ -13,7 +15,7 @@ const AppInventoryList = () => {
 
   const fetchAppList = async () => {
     const data = await fetchAdmixPlayInventory();
-    setAppList(data.data.items);
+    setAppList(data);
   }
 
     const columns = [
@@ -21,7 +23,7 @@ const AppInventoryList = () => {
           title: 'APP TITLE & PUBLISHER',
           dataIndex: 'googlePlayStoreInfo',
           key: 'title',
-          render: (googlePlayStoreInfo: any) => <AppTitlePublisher {...googlePlayStoreInfo} />,
+          render: (googlePlayStoreInfo: StoreInfo) => <AppTitlePublisher {...googlePlayStoreInfo} />,
         },
         {
           title: 'DAILY AVAILS',
@@ -30,39 +32,23 @@ const AppInventoryList = () => {
         },
         {
           title: 'DATE ADDED',
-          dataIndex: 'address',
-          key: 'date',
+          dataIndex: 'createdAt',
+          key: 'createdAt',
         },
         {
           title: 'UPDATED ON',
-          dataIndex: 'address',
-          key: 'update',
+          dataIndex: 'updatedAt',
+          key: 'updatedAt',
         },
         {
           title: 'AGE',
-          dataIndex: 'address',
-          key: 'age',
+          dataIndex: ['googlePlayStoreInfo' ,'contentRating'],
+          key: 'contentRating',
         },
         {
           title: 'CATEGORY',
-          key: 'tags',
-          dataIndex: 'tags',
-          render: (tags: any) => (
-            <>
-              {tags.map((tag: string, i: number) => {
-                let color = tag.length > 5 ? 'geekblue' : 'green';
-                if (tag === 'loser') {
-                  color = 'volcano';
-                }
-                return (
-                  <span color={color} key={tag}>
-                    {tag}
-                    { i !== tags?.length - 1 && <span>, </span> }
-                  </span>
-                );
-              })}
-            </>
-          ),
+          key: 'storeCategories',
+          dataIndex: 'storeCategories',
         },
       ];
 
