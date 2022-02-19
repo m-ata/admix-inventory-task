@@ -18,6 +18,8 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { sorts } = requestBody;
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,28 +45,47 @@ const AppInventoryList = () => {
     navigate(`/edit-app/${id}`)
   }
 
+  const handleTableChange = (pagination: any, filters: any, sorter: any) => {
+    if (sorter?.field && sorter?.order) {
+      const updatedSorts = [...sorts];
+      const sortWithExistedField = updatedSorts.find(s => s.field === sorter.field);
+      if (sortWithExistedField) {
+        const index = updatedSorts?.indexOf(sortWithExistedField);
+        updatedSorts[index] = {field: sorter.field, desc: sorter?.order === 'descend' ? true : false}
+      } else {
+        updatedSorts.push({field: sorter.field, desc: sorter?.order === 'descend' ? true : false})
+      }
+      console.log(updatedSorts)
+      setRequestBody({...requestBody, sorts: updatedSorts});
+    }
+  }
+
     const columns: any = [
         {
           title: 'APP TITLE & PUBLISHER',
           dataIndex: 'title',
           key: 'title',
+          sorter: true,
           render: (title: string, appData: IAppOutput) => <AppTitlePublisher {...appData} />,
         },
         {
           title: 'DAILY AVAILS',
           dataIndex: 'avails',
           key: 'avails',
+          sorter: true,
         },
         {
           title: 'DATE ADDED',
           dataIndex: 'createdAt',
           key: 'createdAt',
+          sorter: true,
           render: (createdAt: string) => <span> {convertDate(createdAt)} </span>,
         },
         {
           title: 'UPDATED ON',
           dataIndex: 'updatedAt',
           key: 'updatedAt',
+          sorter: true,
           render: (updatedAt: string) => <span> {convertDate(updatedAt)} </span>
         },
         {
@@ -93,6 +114,7 @@ const AppInventoryList = () => {
             columns={columns} 
             dataSource={appsData?.items}
             rowKey={'_id'}
+            onChange={handleTableChange}
             pagination={{
               onChange: handlePagination,
               pageSize: requestBody?.pageSize,

@@ -2,8 +2,8 @@ export interface IFetchppRequestBody {
     pageIndex: number,
     pageSize: number,
     operator?: string,
-    filters?: Filter[],
-    sorts?: Sort[]
+    filters?: IFilter[],
+    sorts?: ISort[]
 }
 
 export interface IAppFetchResponse {
@@ -31,13 +31,13 @@ export interface IAppOutput {
     metrics: AppMetrics
     storeCategories: string,
 }
-interface Filter {
+export interface IFilter {
     name: string,
     value: String[] | string,
     operator: string
 }
 
-interface Sort {
+export interface ISort {
     field: string,
     desc: boolean
 }
