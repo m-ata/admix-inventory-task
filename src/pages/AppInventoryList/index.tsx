@@ -1,121 +1,78 @@
-import * as React from 'react';
-import { Table, Tag, Space } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Table, Tag, Space, Card } from 'antd';
+import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
+import AppTitlePublisher from './../../components/AppTitlePublisher';
 
 const AppInventoryList = () => {
 
+  const [appList, setAppList] = useState([]);
+
+  useEffect(() => {
+    fetchAppList();
+  }, []);
+
+  const fetchAppList = async () => {
+    const data = await fetchAdmixPlayInventory();
+    setAppList(data.data.items);
+  }
+
     const columns = [
         {
-          title: 'Name',
-          dataIndex: 'name',
-          key: 'name',
-          render: (text: any) => <a>{text}</a>,
+          title: 'APP TITLE & PUBLISHER',
+          dataIndex: 'googlePlayStoreInfo',
+          key: 'title',
+          render: (googlePlayStoreInfo: any) => <AppTitlePublisher {...googlePlayStoreInfo} />,
         },
         {
-          title: 'Age',
-          dataIndex: 'age',
+          title: 'DAILY AVAILS',
+          dataIndex: 'avails',
+          key: 'avails',
+        },
+        {
+          title: 'DATE ADDED',
+          dataIndex: 'address',
+          key: 'date',
+        },
+        {
+          title: 'UPDATED ON',
+          dataIndex: 'address',
+          key: 'update',
+        },
+        {
+          title: 'AGE',
+          dataIndex: 'address',
           key: 'age',
         },
         {
-          title: 'Address',
-          dataIndex: 'address',
-          key: 'address',
-        },
-        {
-          title: 'Tags',
+          title: 'CATEGORY',
           key: 'tags',
           dataIndex: 'tags',
           render: (tags: any) => (
             <>
-              {tags.map((tag: any) => {
+              {tags.map((tag: string, i: number) => {
                 let color = tag.length > 5 ? 'geekblue' : 'green';
                 if (tag === 'loser') {
                   color = 'volcano';
                 }
                 return (
-                  <Tag color={color} key={tag}>
-                    {tag.toUpperCase()}
-                  </Tag>
+                  <span color={color} key={tag}>
+                    {tag}
+                    { i !== tags?.length - 1 && <span>, </span> }
+                  </span>
                 );
               })}
             </>
           ),
         },
-        {
-          title: 'Action',
-          key: 'action',
-          render: (text: any, record: any) => (
-            <Space size="middle">
-              <a>Invite {record.name}</a>
-              <a>Delete</a>
-            </Space>
-          ),
-        },
-      ];
-      
-      const data = [
-        {
-          key: '1',
-          name: 'John Brown',
-          age: 32,
-          address: 'New York No. 1 Lake Park',
-          tags: ['nice', 'developer'],
-        },
-        {
-          key: '2',
-          name: 'Jim Green',
-          age: 42,
-          address: 'London No. 1 Lake Park',
-          tags: ['loser'],
-        },
-        {
-          key: '3',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
-        {
-          key: '4',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
-        {
-          key: '5',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
-        {
-          key: '6',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
-        {
-          key: '7',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
-        {
-          key: '8',
-          name: 'Joe Black',
-          age: 32,
-          address: 'Sidney No. 1 Lake Park',
-          tags: ['cool', 'teacher'],
-        },
       ];
 
     return (
-        <Table 
+        <Card>
+          <Table 
             columns={columns} 
-            dataSource={data} 
+            dataSource={appList} 
         />
+        </Card>
     )
 }
 export default AppInventoryList;

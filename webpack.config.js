@@ -29,6 +29,13 @@ module.exports = {
       },
       devServer: {
         historyApiFallback: true,
+        proxy: {
+          "*": {
+            target: "https://services.admixplay.com",
+            secure: false,
+            changeOrigin: true,
+          },
+        },    
       },
       plugins: [
         new HtmlWebpackPlugin({
