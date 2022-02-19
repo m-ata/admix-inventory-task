@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Card, Spin } from 'antd';
+import { Table, Card } from 'antd';
 import {
-  MoreOutlined
+  EditOutlined,
 } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 import { defaultRequest } from './../../constant';
+import './index.css';
 
 const AppInventoryList = () => {
 
@@ -16,8 +18,9 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
   const [isLoading, setIsLoading] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    console.log(requestBody);
     fetchAppList();
   }, [requestBody]);
 
@@ -34,6 +37,10 @@ const AppInventoryList = () => {
 
   const handlePageSizeChange = (current: number, page: number) => {
     setRequestBody({ ...requestBody, pageIndex: current - 1, pageSize: page - 1 });
+  }
+
+  const handleEdit = (id: string) => {
+    navigate(`/edit-app/${id}`)
   }
 
     const columns: any = [
@@ -73,8 +80,9 @@ const AppInventoryList = () => {
         },
         {
           title: '',
-          key: 'more',
-          render: () => <MoreOutlined />
+          key: 'edit',
+          dataIndex: '_id',
+          render: (_id: string) => <EditOutlined  className='edit-icon'  onClick={() => handleEdit(_id)} />
         },
       ];
 
