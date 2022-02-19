@@ -1,14 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { AppFetchResponse } from './../interfaces/AppFetchResponse';
+import { IFetchppRequestBody } from './../interfaces';
 
-export const fetchAdmixPlayInventory = async () => {
+export const fetchAdmixPlayInventory = async (body: IFetchppRequestBody) => {
     try {
-        const response: AxiosResponse<AppFetchResponse> = await axios.post('/challenge-v1/fetch', {
-            pageIndex: 0,
-            pageSize: 5,
-            filters:[{"name":"updatedAt", "value":"2020-07-25T22:01:57.366Z" , "operator": "gt"}],
-            sorts:[{"field" : "updatedAt" , "desc" : true}]
-        }, {
+        const response: AxiosResponse<AppFetchResponse> = await axios.post('/challenge-v1/fetch', body, {
             headers: {
               'Content-Type': 'application/json',
               "Access-Control-Allow-Origin": "*",
