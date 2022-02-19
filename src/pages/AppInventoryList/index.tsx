@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Card } from 'antd';
+import { Table, Card, Spin } from 'antd';
 import {
   MoreOutlined
 } from '@ant-design/icons';
@@ -14,6 +14,7 @@ const AppInventoryList = () => {
 
   const [appsData, setAppsData] = useState<IFetchResponseData>(null);
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     console.log(requestBody);
@@ -21,8 +22,10 @@ const AppInventoryList = () => {
   }, [requestBody]);
 
   const fetchAppList = async () => {
+    setIsLoading(true);
     const data = await fetchAdmixPlayInventory(requestBody);
     setAppsData(data);
+    setIsLoading(false);
   }
 
   const handlePagination = (pageNumber: number) => {
@@ -78,6 +81,7 @@ const AppInventoryList = () => {
     return (
         <Card>
           <Table 
+            loading={isLoading}
             columns={columns} 
             dataSource={appsData?.items}
             rowKey={'_id'}
