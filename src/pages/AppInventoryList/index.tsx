@@ -8,19 +8,29 @@ import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
+import { defaultRequest } from './../../constant';
 
 const AppInventoryList = () => {
 
   const [appsData, setAppsData] = useState<IFetchResponseData>(null);
-  const [requestBody, setRequestBody] = useState<IFetchppRequestBody>({ pageIndex: 0, pageSize: 5 });
+  const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
 
   useEffect(() => {
+    console.log(requestBody);
     fetchAppList();
-  }, []);
+  }, [requestBody]);
 
   const fetchAppList = async () => {
     const data = await fetchAdmixPlayInventory(requestBody);
     setAppsData(data);
+  }
+
+  const handlePagination = (pageNumber: number) => {
+    setRequestBody({ ...requestBody, pageIndex: pageNumber - 1 });
+  }
+
+  const handlePageSizeChange = (current: number, page: number) => {
+    setRequestBody({ ...requestBody, pageIndex: current - 1, pageSize: page - 1 });
   }
 
     const columns: any = [
@@ -72,9 +82,12 @@ const AppInventoryList = () => {
             dataSource={appsData?.items}
             rowKey={'_id'}
             pagination={{
-              onChange: (page) => console.log(page),
-              pageSize: 5,
-              total: appsData?.totalCount
+              onChange: handlePagination,
+              pageSize: requestBody?.pageSize,
+              current: requestBody?.pageIndex + 1,
+              total: appsData?.totalCount,
+              onShowSizeChange: handlePageSizeChange,
+              pageSizeOptions: ['5', '10', '20', '50'],
           }}
         />
         </Card>
