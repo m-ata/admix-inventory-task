@@ -5,13 +5,13 @@ import {
 } from '@ant-design/icons';
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
-import { AppOutput } from './../../interfaces/AppOutput';
+import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody } from './../../interfaces';
 
 const AppInventoryList = () => {
 
-  const [appList, setAppList] = useState<AppOutput[]>([]);
+  const [appList, setAppList] = useState<IAppOutput[]>([]);
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>({ pageIndex: 0, pageSize: 5 });
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const AppInventoryList = () => {
           title: 'APP TITLE & PUBLISHER',
           dataIndex: 'title',
           key: 'title',
-          render: (title: string, appData: AppOutput) => <AppTitlePublisher {...appData} />,
+          render: (title: string, appData: IAppOutput) => <AppTitlePublisher {...appData} />,
         },
         {
           title: 'DAILY AVAILS',
@@ -51,7 +51,7 @@ const AppInventoryList = () => {
           title: 'AGE',
           dataIndex: ['appStoreInfo' ,'contentRating'],
           key: 'contentRating',
-          render: (title: string, appData: AppOutput) => <span> { appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating } </span>
+          render: (title: string, appData: IAppOutput) => <span> { appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating } </span>
         },
         {
           title: 'CATEGORY',

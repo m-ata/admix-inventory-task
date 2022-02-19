@@ -1,12 +1,12 @@
 import React from 'react';
 import { Avatar, Typography, Space } from 'antd';
-import { AppOutput }  from './../../interfaces/AppOutput';
+import { IAppOutput }  from './../../interfaces';
 
 const { Title, Text } = Typography;
 
 import './index.css';
 
-const AppTitlePublisher = (props: AppOutput) => {
+const AppTitlePublisher = (props: IAppOutput) => {
 
   const { title, googlePlayStoreInfo, appStoreInfo } = props;
 
