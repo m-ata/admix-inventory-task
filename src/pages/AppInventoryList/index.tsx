@@ -18,7 +18,7 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { sorts } = requestBody;
+  const { sorts, pageIndex } = requestBody;
 
   const navigate = useNavigate();
 
@@ -33,30 +33,28 @@ const AppInventoryList = () => {
     setIsLoading(false);
   }
 
-  const handlePagination = (pageNumber: number) => {
-    setRequestBody({ ...requestBody, pageIndex: pageNumber - 1 });
-  }
-
-  const handlePageSizeChange = (current: number, page: number) => {
-    setRequestBody({ ...requestBody, pageIndex: current - 1, pageSize: page - 1 });
-  }
-
   const handleEdit = (id: string) => {
     navigate(`/edit-app/${id}`)
   }
 
-  const handleTableChange = (pagination: any, filters: any, sorter: any) => {
-    if (sorter?.field && sorter?.order) {
-      const updatedSorts = [...sorts];
-      const sortWithExistedField = updatedSorts.find(s => s.field === sorter.field);
-      if (sortWithExistedField) {
-        const index = updatedSorts?.indexOf(sortWithExistedField);
-        updatedSorts[index] = {field: sorter.field, desc: sorter?.order === 'descend' ? true : false}
-      } else {
-        updatedSorts.push({field: sorter.field, desc: sorter?.order === 'descend' ? true : false})
-      }
-      console.log(updatedSorts)
-      setRequestBody({...requestBody, sorts: updatedSorts});
+  const handleTableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
+    switch (extra['action']) {
+      case 'sort':
+        if (sorter?.field && sorter?.order) {
+          const updatedSorts = [...sorts];
+          const sortWithExistedField = updatedSorts.find(s => s.field === sorter.field);
+          if (sortWithExistedField) {
+            const index = updatedSorts?.indexOf(sortWithExistedField);
+            updatedSorts[index] = {field: sorter.field, desc: sorter?.order === 'descend' ? true : false}
+          } else {
+            updatedSorts.push({field: sorter.field, desc: sorter?.order === 'descend' ? true : false})
+          }
+          setRequestBody({...requestBody, sorts: updatedSorts});
+        }
+        break;
+      case 'paginate':
+        setRequestBody({ ...requestBody, pageIndex: pagination.current - 1, pageSize: pagination.pageSize });
+        break;
     }
   }
 
@@ -116,11 +114,9 @@ const AppInventoryList = () => {
             rowKey={'_id'}
             onChange={handleTableChange}
             pagination={{
-              onChange: handlePagination,
-              pageSize: requestBody?.pageSize,
-              current: requestBody?.pageIndex + 1,
+              defaultPageSize: 5,
+              current: pageIndex + 1,
               total: appsData?.totalCount,
-              onShowSizeChange: handlePageSizeChange,
               pageSizeOptions: ['5', '10', '20', '50'],
           }}
         />
