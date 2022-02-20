@@ -65,6 +65,17 @@ const AppInventoryList = () => {
       render: (title: string, appData: IAppOutput) => <AppTitlePublisher {...appData} />,
     },
     {
+      title: '',
+      dataIndex: 'featured',
+      key: 'featured',
+      render: (featured: boolean) => <span className='featured-cell'> 
+                {featured && <>
+                <span className='circle'></span>
+                <span> Featured </span>
+                </>} 
+                </span>,
+    },
+    {
       title: 'DAILY AVAILS',
       dataIndex: 'avails',
       key: 'avails',
