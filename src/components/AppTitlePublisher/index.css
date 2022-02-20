@@ -1,9 +1,14 @@
+.app-text-layout {
+    display: flex;
+    flex-direction: column;
+}
 .app-title {
     font-family: 'Mulish', sans-serif;
     color: #2622B5 !important;
     font-style: normal;
-    font-weight: bold;
+    font-weight: 700;
     font-size: 14px;
+    line-height: 21px;
 }
 
 .app-publisher {
@@ -12,4 +17,10 @@
     font-weight: 600;
     font-size: 13px;
     color: #858798 !important;
+}
+
+.app-icon {
+    width: 44.66px !important;
+    height: 42px !important;
+    border-radius: 8px !important;
 }
