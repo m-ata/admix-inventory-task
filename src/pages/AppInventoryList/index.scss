@@ -1,46 +1,86 @@
 .edit-icon {
 	cursor: pointer;
 }
+
 .search-input {
 	border-radius: 10px !important;
-    padding: 10px 10px 10px 12px !important;
-    height: 44px;
-    margin: 16px 0 !important;
+	padding: 10px 10px 10px 12px !important;
+	height: 44px;
+	margin: 16px 0 !important;
 }
+
 .layout-color {
 	background: #E5E5E5;
 	min-height: 100vh;
 }
+
 .layout {
 	margin: 0 16px !important;
 }
+
 .disable-element {
 	color: #0B0F32;
 	pointer-events: none;
 }
-.ant-table-cell {
-	background: #FFFFFF !important;
-}
+
 .ant-table-wrapper {
 	background-color: #FFFFFF;
 	min-height: 500px;
 	border-radius: 10px;
 	padding: 4px !important;
 	height: calc(100vh - 90px);
-}
-.ant-table {
-	height: calc(100vh - 150px);
-	overflow: auto;
-}
-.ant-table-pagination.ant-pagination {
-	margin: 16px 16px !important;
-}
-.ant-select-selector {
-	border-radius: 6px !important;
-	border: 1px solid #DCDFEE !important;
-}
-.ant-table-thead {
-	font-size: 12px;
-	line-height: 24px;
-	font-weight: 700;
+
+	.ant-table {
+		height: calc(100vh - 150px);
+		overflow: auto;
+
+		.ant-table-thead {
+			font-size: 12px;
+			line-height: 24px;
+			font-weight: 700;
+
+			.ant-table-cell {
+				color: #858798;
+				background: #FFFFFF !important;
+			}
+		}
+
+		.ant-table-tbody {
+			.ant-table-cell {
+				color: #232747;
+				font-family: 'Mulish', sans-serif;
+				.avail-cell {
+					font-size: 14px;
+					font-weight: bold;
+					line-height: 21px;
+				}
+				.date-cell {
+					font-style: normal;
+					font-weight: 500;
+					font-size: 13px !important;
+					line-height: 18px;
+				}
+				.category-cell {
+					font-size: 13px !important;
+					font-weight: 500;
+					line-height: 18px;
+				}
+				.age-cell {
+					font-size: 12px !important;
+					text-transform: uppercase;
+					font-weight: bold;
+					line-height: 24px;
+				}
+			}
+		}
+
+		.ant-table-pagination.ant-pagination {
+			margin: 16px 16px !important;
+		}
+	}
+
+	.ant-select-selector {
+		border-radius: 6px !important;
+		border: 1px solid #DCDFEE !important;
+	}
 }

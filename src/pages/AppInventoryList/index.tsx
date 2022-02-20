@@ -69,31 +69,33 @@ const AppInventoryList = () => {
       dataIndex: 'avails',
       key: 'avails',
       sorter: true,
+      render: (avails: string) => <span className='avail-cell'> {avails} </span>
     },
     {
       title: 'DATE ADDED',
       dataIndex: 'createdAt',
       key: 'createdAt',
       sorter: true,
-      render: (createdAt: string) => <span> {convertDate(createdAt)} </span>,
+      render: (createdAt: string) => <span className='date-cell'> {convertDate(createdAt)} </span>,
     },
     {
       title: 'UPDATED ON',
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       sorter: true,
-      render: (updatedAt: string) => <span> {convertDate(updatedAt)} </span>
+      render: (updatedAt: string) => <span className='date-cell'> {convertDate(updatedAt)} </span>
     },
     {
       title: 'AGE',
       dataIndex: ['appStoreInfo', 'contentRating'],
       key: 'contentRating',
-      render: (title: string, appData: IAppOutput) => <span> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
+      render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
     },
     {
       title: 'CATEGORY',
-      key: 'storeCategories',
-      dataIndex: ['googlePlayStoreInfo', 'genre'],
+      key: 'genre',
+      dataIndex: ['appStoreInfo', 'genre'],
+      render: (title: string, appData: IAppOutput) => <span className='category-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.genre} </span>
     },
     {
       title: '',
