@@ -8,7 +8,7 @@ import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 import { defaultRequest } from './../../constant';
-import './index.css';
+import './index.scss';
 
 const AppInventoryList = () => {
 
