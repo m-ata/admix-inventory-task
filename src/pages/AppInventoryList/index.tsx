@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Card, Input } from 'antd';
+import { Table, Switch, Input } from 'antd';
 import { EditOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
@@ -57,6 +57,12 @@ const AppInventoryList = () => {
   }
 
   const columns: any = [
+    {
+      title: 'STATUS',
+      dataIndex: 'isDeleted',
+      key: 'isDeleted',
+      render: (isDeleted: boolean) => <Switch checked={isDeleted} />
+    },
     {
       title: 'APP TITLE & PUBLISHER',
       dataIndex: 'title',
