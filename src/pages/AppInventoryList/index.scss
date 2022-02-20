@@ -49,6 +49,11 @@
 			.ant-table-cell {
 				color: #232747;
 				font-family: 'Mulish', sans-serif;
+
+				.ant-switch-checked {
+					background: #2622B5 !important
+				}
+
 				.featured-cell {
 					font-style: normal;
 					font-weight: bold;
