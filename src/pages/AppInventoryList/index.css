@@ -26,6 +26,11 @@
 	min-height: 500px;
 	border-radius: 10px;
 	padding: 4px !important;
+	height: calc(100vh - 90px);
+}
+.ant-table {
+	height: calc(100vh - 150px);
+	overflow: auto;
 }
 .ant-table-pagination.ant-pagination {
 	margin: 16px 16px !important;
