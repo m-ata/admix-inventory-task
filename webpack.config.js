@@ -23,12 +23,19 @@ module.exports = {
           },
           {
             test: /\.css$/,
-            loader: "css-loader",
+            use: ['style-loader','css-loader']
           },
         ],
       },
       devServer: {
         historyApiFallback: true,
+        proxy: {
+          "*": {
+            target: "https://services.admixplay.com",
+            secure: false,
+            changeOrigin: true,
+          },
+        },    
       },
       plugins: [
         new HtmlWebpackPlugin({

@@ -1,0 +1,15 @@
+.app-title {
+    font-family: 'Mulish', sans-serif;
+    color: #2622B5 !important;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.app-publisher {
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 13px;
+    color: #858798 !important;
+}
