@@ -4,7 +4,7 @@ import { IAppOutput }  from './../../interfaces';
 import { EMPTY_IMAGE } from '../../constant';
 import './index.css';
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 
 const AppTitlePublisher = (props: IAppOutput) => {
@@ -15,9 +15,9 @@ const AppTitlePublisher = (props: IAppOutput) => {
 
   return (
     <Space>
-      <Avatar size={64} shape={'square'} icon={<img src={iconLink} />} />
-      <Text>
-        <Title level={5} className={'app-title'}> {title} </Title>
+      <Avatar className='app-icon' shape={'square'} icon={<img src={iconLink} />} />
+      <Text className='app-text-layout'>
+        <Text className={'app-title'}> {title} </Text>
         <Text className={'app-publisher'} > {appStoreInfo ? appStoreInfo?.studio : googlePlayStoreInfo?.studio} </Text>
       </Text>
     </Space>
