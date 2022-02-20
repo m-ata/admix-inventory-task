@@ -2,7 +2,7 @@ import React from 'react';
 import { Avatar, Typography, Space } from 'antd';
 import { IAppOutput }  from './../../interfaces';
 import { EMPTY_IMAGE } from '../../constant';
-import './index.css';
+import './index.scss';
 
 const { Text } = Typography;
 
