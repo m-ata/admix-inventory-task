@@ -49,10 +49,25 @@
 			.ant-table-cell {
 				color: #232747;
 				font-family: 'Mulish', sans-serif;
+				.featured-cell {
+					font-style: normal;
+					font-weight: bold;
+					font-size: 14px;
+					line-height: 18px;
+					.circle {
+						height: 8px;
+						width: 8px;
+						background-color: #5287ED;
+						border-radius: 50%;
+						display: inline-block;
+						margin: 0px 8px;
+					}
+				}
 				.avail-cell {
 					font-size: 14px;
 					font-weight: bold;
 					line-height: 21px;
+					
 				}
 				.date-cell {
 					font-style: normal;
