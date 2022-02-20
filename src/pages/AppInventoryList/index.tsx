@@ -104,13 +104,13 @@ const AppInventoryList = () => {
   ];
 
   const itemRender = (current: any, type: string, originalElement: any) => {
-    
+
     if (type === 'prev') {
       return (
-      <div className={`${pageIndex === 0 ? 'disable-element' : ''}`} > 
-        <LeftOutlined /> 
-        <a>prev</a>
-      </div> );
+        <div className={`${pageIndex === 0 ? 'disable-element' : ''}`} >
+          <LeftOutlined />
+          <a>prev</a>
+        </div>);
     }
     if (type === 'next') {
       return <><a>next</a> <RightOutlined /> </>;
@@ -121,8 +121,7 @@ const AppInventoryList = () => {
   return (
     <div className='layout-color'>
       <div className='layout'>
-      <Input className='search-input' placeholder="Search app name" />
-      <div className='table-div'>
+        <Input className='search-input' placeholder="Search app name" />
         <Table
           loading={isLoading}
           columns={columns}
@@ -138,8 +137,6 @@ const AppInventoryList = () => {
           }}
         />
       </div>
-      </div>
-      
     </div>
   )
 }
