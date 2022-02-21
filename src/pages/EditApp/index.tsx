@@ -65,29 +65,16 @@ const EditApp = () => {
                 >
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item
-                                label="App Details"
-                                name="details"
-                                className='app-details-label'
-                            >
-                            </Form.Item>
+                            <Form.Item label="App Details" className='app-details-label' />
                         </Col>
                         <Col span={4}>
-                            <Form.Item
-                                label="Featured"
-                                name="featured"
-                                className='inline-items'
-                            >
+                            <Form.Item label="Featured" className='inline-items'>
                                 <InfoCircleOutlined />
                                 <Switch size='small' defaultChecked={featured} checked={featured} onChange={(value: boolean) => handleSetFormData('featured', value)} />
                             </Form.Item>
                         </Col>
                         <Col span={4}>
-                            <Form.Item
-                                label="Published"
-                                name="isDeleted"
-                                className='inline-items'
-                            >
+                            <Form.Item label="Published" className='inline-items'>
                                 <InfoCircleOutlined />
                                 <Switch size='small' defaultChecked={isDeleted} checked={isDeleted} onChange={(value: boolean) => handleSetFormData('isDeleted', value)} />
                             </Form.Item>
@@ -95,18 +82,12 @@ const EditApp = () => {
                     </Row>
                     <Row gutter={12}>
                         <Col span={12}>
-                            <Form.Item
-                                label="App Title"
-                                name="title"
-                            >
+                            <Form.Item label="App Title">
                                 <Input defaultValue={title} value={title} onChange={(e: any) => handleSetFormData('title', e.target.value)} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item
-                                label="Publisher Name"
-                                name="studio"
-                            >
+                            <Form.Item label="Publisher Name">
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -121,10 +102,7 @@ const EditApp = () => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item
-                                label="Tags"
-                                name="tags"
-                            >
+                            <Form.Item label="Tags">
                                 <Input 
                                     value={tmpTagValue}
                                     onChange={(e) => setTmpTagValue(e.target.value)}
@@ -146,10 +124,7 @@ const EditApp = () => {
                     </Row>
                     <Row gutter={12}>
                         <Col span={12}>
-                            <Form.Item
-                                label="Categories"
-                                name="genre"
-                            >
+                            <Form.Item label="Categories">
                                 <Select
                                     placeholder="Choose Category"
                                     allowClear
@@ -162,10 +137,7 @@ const EditApp = () => {
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <Form.Item
-                                label="Description"
-                                name="description"
-                            >
+                            <Form.Item label="Description">
                                 <Input.TextArea
                                     defaultValue={description}
                                     value={description}
