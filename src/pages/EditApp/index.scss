@@ -1,0 +1,24 @@
+.form-layout {
+    padding: 16px 24px;
+}
+.inline-items {
+    flex-direction: row !important;
+    .ant-form-item-label {
+        font-family: 'Mulish', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 18px !important;
+        padding-top: 8px !important;
+    }
+    .anticon {
+        padding: 0 8px;
+    }
+    .ant-switch {
+        margin-bottom: 4px;
+
+        &.ant-switch-checked {
+            background: #2622B5 !important
+        }
+    }
+}

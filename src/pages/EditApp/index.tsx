@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { PageHeader, Button, Divider, Form, Input, Row, Col, Select } from 'antd';
-import './index.css';
+import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
+import './index.scss';
 
 const EditApp = () => {
     return (
@@ -20,6 +21,35 @@ const EditApp = () => {
                     autoComplete="off"
                     layout={'vertical'}
                 >
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item
+                                label="App Details"
+                                name="details"
+                            >
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                            <Form.Item
+                                label="Featured"
+                                name="featured"
+                                className='inline-items'
+                            >
+                                <InfoCircleOutlined />
+                                <Switch size='small' />
+                            </Form.Item>
+                        </Col>
+                        <Col span={4}>
+                            <Form.Item
+                                label="Published"
+                                name="isDeleted"
+                                className='inline-items'
+                            >
+                                <InfoCircleOutlined />
+                                <Switch size='small' />
+                            </Form.Item>
+                        </Col>
+                    </Row>
                     <Row gutter={12}>
                         <Col span={12}>
                             <Form.Item
@@ -69,6 +99,16 @@ const EditApp = () => {
                                     <Select.Option value="Action">Action</Select.Option>
                                     <Select.Option value="Adventure">Adventure</Select.Option>
                                 </Select>
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Form.Item
+                                label="Description"
+                                name="description"
+                            >
+                                <Input.TextArea autoSize={{minRows: 8, maxRows: 12}} placeholder="Please write app descriptio here" minLength={8} />
                             </Form.Item>
                         </Col>
                     </Row>
