@@ -9,8 +9,8 @@ const EditApp = () => {
             <PageHeader
                 title="Inventory / Edit"
                 extra={[
-                    <Button key="1">Cancel</Button>,
-                    <Button key="2" type="primary"> Save </Button>
+                    <Button key="1" type='text' className='cancel'>Cancel</Button>,
+                    <Button key="2" className='save'> Save </Button>
                 ]}
             />
             <div className={'form-layout'}>
@@ -26,6 +26,7 @@ const EditApp = () => {
                             <Form.Item
                                 label="App Details"
                                 name="details"
+                                className='app-details-label'
                             >
                             </Form.Item>
                         </Col>

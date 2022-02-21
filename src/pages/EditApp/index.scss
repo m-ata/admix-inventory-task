@@ -1,24 +1,82 @@
 .form-layout {
     padding: 16px 24px;
 }
+
+.save {
+    background: #2622B5 !important;
+    border-radius: 10px !important;
+    color: #FFFFFF !important;
+    padding: 10px 24px !important;
+    width: 81px;
+    height: 44px !important;
+}
+
+.cancel {
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px !important;
+    line-height: 24px !important;
+    color: #2622B5 !important;
+}
+
 .inline-items {
     flex-direction: row !important;
+
     .ant-form-item-label {
         font-family: 'Mulish', sans-serif;
-        font-style: normal;
+        font-style : normal;
         font-weight: normal;
         font-size: 14px;
         line-height: 18px !important;
         padding-top: 8px !important;
+        color: #232747;
     }
+
     .anticon {
         padding: 0 8px;
     }
+
     .ant-switch {
         margin-bottom: 4px;
 
         &.ant-switch-checked {
             background: #2622B5 !important
         }
+    }
+}
+
+.app-details-label {
+
+    .ant-form-item-label > label {
+        color: #858798 !important;
+        font-size: 12px !important;
+        font-family: 'Mulish', sans-serif;
+        font-style : normal;
+        font-weight: bold;
+        line-height: 24px !important;
+        text-transform: uppercase;
+    }
+}
+
+.ant-input {
+    border-radius: 10px !important;
+    height: 44px;
+}
+
+.ant-select-selector {
+    align-items: center;
+    border-radius: 10px !important;
+    height: 44px !important;
+}
+
+.ant-form-item-label {
+    font-family: 'Mulish', sans-serif;
+    font-style : normal;
+    font-weight: bold;
+    font-size: 13px !important;
+    line-height: 21px !important;
+    label {
+        color: #232747;
     }
 }
