@@ -1,9 +1,22 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch } from 'antd';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import './index.scss';
+import { useSelector } from 'react-redux';
+import { IAppOutput } from './../../interfaces';
 
 const EditApp = () => {
+
+    const appInfo = useSelector((state: any) => state.appInfo.appInfo);
+
+    const [formData, setFormData] = useState<IAppOutput>(appInfo);
+
+    const { _id, title, description, googlePlayStoreInfo, appStoreInfo, featured, isDeleted } = formData;
+
+    const handleSetFormData = (fireld: string, value: any) => {
+
+    }
+
     return (
         <div>
             <PageHeader
@@ -37,7 +50,7 @@ const EditApp = () => {
                                 className='inline-items'
                             >
                                 <InfoCircleOutlined />
-                                <Switch size='small' />
+                                <Switch size='small' defaultChecked={featured} />
                             </Form.Item>
                         </Col>
                         <Col span={4}>
@@ -47,7 +60,7 @@ const EditApp = () => {
                                 className='inline-items'
                             >
                                 <InfoCircleOutlined />
-                                <Switch size='small' />
+                                <Switch size='small' defaultChecked={isDeleted} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -57,7 +70,7 @@ const EditApp = () => {
                                 label="App Title"
                                 name="title"
                             >
-                                <Input />
+                                <Input defaultValue={title} value={title} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -75,7 +88,7 @@ const EditApp = () => {
                                 label="App ID"
                                 name="_id"
                             >
-                                <Input />
+                                <Input disabled defaultValue={_id} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -109,7 +122,7 @@ const EditApp = () => {
                                 label="Description"
                                 name="description"
                             >
-                                <Input.TextArea autoSize={{minRows: 8, maxRows: 12}} placeholder="Please write app descriptio here" minLength={8} />
+                                <Input.TextArea defaultValue={description} value={description} autoSize={{minRows: 8, maxRows: 12}} placeholder="Please write app descriptio here" minLength={8} />
                             </Form.Item>
                         </Col>
                     </Row>

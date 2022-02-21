@@ -20,7 +20,9 @@ export const initialState: IAppInfo = {
     	googlePlayStoreInfo: null as StoreInfo,
     	appStoreInfo: null as StoreInfo,
     	avails: 0,
-    	metrics: null as AppMetrics,
-    	storeCategories: '',
+		metrics: null as AppMetrics,
+		description: '',
+		featured: false,
+		isDeleted: false
 	}
 }

@@ -28,8 +28,10 @@ export interface IAppOutput {
     googlePlayStoreInfo: StoreInfo,
     appStoreInfo: StoreInfo,
     avails: number,
-    metrics: AppMetrics
-    storeCategories: string,
+    metrics: AppMetrics,
+    description?: string,
+    featured?: boolean,
+    isDeleted?: boolean
 }
 export interface IAppInfo {
     appInfo: IAppOutput;

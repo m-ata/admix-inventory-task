@@ -13,7 +13,7 @@ const AppRouter = () =>
         <Routes>
             <Route path="/">
                 <Route index element={<AppInventoryList />} />
-                <Route path="edit-app/:id" element={<EditApp />} />
+                <Route path="edit-app" element={<EditApp />} />
             </Route>
         </Routes>
     </BrowserRouter>
