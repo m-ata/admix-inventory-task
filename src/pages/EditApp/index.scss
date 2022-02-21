@@ -20,6 +20,25 @@
     color: #2622B5 !important;
 }
 
+.tag {
+    background: #EAEEF3 !important;
+    border: 1px solid #DFE3E9 !important;
+    box-sizing: border-box !important;
+    border-radius: 28px !important;
+    font-family: 'Mulish', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px !important;
+    line-height: 18px !important;
+    color: #0B0F32 !important;
+    margin-top: 8px !important;
+    padding: 5px 10px !important;
+}
+
+.close {
+    cursor: pointer;
+}
+
 .inline-items {
     flex-direction: row !important;
 

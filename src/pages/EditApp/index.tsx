@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch } from 'antd';
+import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch, Tag } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 //css import
 import './index.scss';
 //custom imports
@@ -14,22 +14,36 @@ const EditApp = () => {
     const appInfo = useSelector((state: any) => state.appInfo.appInfo);
 
     const [formData, setFormData] = useState<IAppOutput>(appInfo);
+    const [tmpTagValue, setTmpTagValue] = useState<string>('');
 
     const navigate = useNavigate();
 
-    const { _id, title, description, googlePlayStoreInfo, appStoreInfo, featured, isDeleted } = formData;
+    const { _id, title, description, googlePlayStoreInfo, appStoreInfo, featured, isDeleted, tags } = formData;
 
     const handleSetFormData = (field: string, value: any) => {
-        setFormData({...formData, [field]: value});
+        setFormData({ ...formData, [field]: value });
     }
 
     const handleSave = async () => {
-       const response = await updateEnrichedApp(_id, formData);
-       navigate('/');
+        const response = await updateEnrichedApp(_id, formData);
+        navigate('/');
     }
 
     const handleCancel = () => {
         navigate('/');
+    }
+
+    const handleRemoveTag = (index: number) => {
+        const updatedTags = [...tags];
+        updatedTags.splice(index, 1);
+        setFormData({ ...formData, tags: updatedTags });
+    }
+
+    const handleAddTag = (tag: string) => {
+        const updatedTags = [...tags];
+        updatedTags.push(tag);
+        setFormData({ ...formData, tags: updatedTags });
+        setTmpTagValue('');
     }
 
     return (
@@ -111,7 +125,22 @@ const EditApp = () => {
                                 label="Tags"
                                 name="tags"
                             >
-                                <Input />
+                                <Input 
+                                    value={tmpTagValue}
+                                    onChange={(e) => setTmpTagValue(e.target.value)}
+                                    onBlur={(e: any) => handleAddTag(e.target.value)} 
+                                    onKeyPress={(e: any) => e?.charCode === 13 && handleAddTag(e.target.value)} 
+                                />
+                                {
+                                    tags?.map((tag: string, index: number) => {
+                                        return (
+                                            <Tag className='tag' key={`tag-${index}`}>
+                                                <span> {tag} </span>
+                                                <CloseOutlined className='close' onClick={() => handleRemoveTag(index)} />
+                                            </Tag>
+                                        )
+                                    })
+                                }
                             </Form.Item>
                         </Col>
                     </Row>
@@ -137,12 +166,12 @@ const EditApp = () => {
                                 label="Description"
                                 name="description"
                             >
-                                <Input.TextArea 
-                                    defaultValue={description} 
-                                    value={description} 
-                                    autoSize={{minRows: 8, maxRows: 12}} 
-                                    placeholder="Please write app descriptio here" 
-                                    minLength={8} 
+                                <Input.TextArea
+                                    defaultValue={description}
+                                    value={description}
+                                    autoSize={{ minRows: 8, maxRows: 12 }}
+                                    placeholder="Please write app descriptio here"
+                                    minLength={8}
                                     onChange={(e: any) => handleSetFormData('description', e.target.value)}
                                 />
                             </Form.Item>
