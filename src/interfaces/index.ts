@@ -31,6 +31,9 @@ export interface IAppOutput {
     metrics: AppMetrics
     storeCategories: string,
 }
+export interface IAppInfo {
+    appInfo: IAppOutput;
+}
 export interface IFilter {
     name: string,
     value: String[] | string,
@@ -42,7 +45,7 @@ export interface ISort {
     desc: boolean
 }
 
-interface StoreInfo {
+export interface StoreInfo {
     contentRating: string,
     genre: string,
     icon: string,
@@ -53,7 +56,7 @@ interface StoreInfo {
     url: string
 }
 
-interface AppMetrics {
+export interface AppMetrics {
     dau: number,
     mau: number,
     avgTimePerSession: number,
