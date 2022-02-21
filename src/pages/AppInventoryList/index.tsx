@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Card } from 'antd';
-import {
-  EditOutlined,
-} from '@ant-design/icons';
+import { Table, Switch, Input } from 'antd';
+import { EditOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
@@ -10,7 +8,7 @@ import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 import { defaultRequest } from './../../constant';
-import './index.css';
+import './index.scss';
 
 const AppInventoryList = () => {
 
@@ -45,11 +43,11 @@ const AppInventoryList = () => {
           const sortWithExistedField = updatedSorts.find(s => s.field === sorter.field);
           if (sortWithExistedField) {
             const index = updatedSorts?.indexOf(sortWithExistedField);
-            updatedSorts[index] = {field: sorter.field, desc: sorter?.order === 'descend' ? true : false}
+            updatedSorts[index] = { field: sorter.field, desc: sorter?.order === 'descend' ? true : false }
           } else {
-            updatedSorts.push({field: sorter.field, desc: sorter?.order === 'descend' ? true : false})
+            updatedSorts.push({ field: sorter.field, desc: sorter?.order === 'descend' ? true : false })
           }
-          setRequestBody({...requestBody, sorts: updatedSorts});
+          setRequestBody({ ...requestBody, sorts: updatedSorts });
         }
         break;
       case 'paginate':
@@ -58,69 +56,107 @@ const AppInventoryList = () => {
     }
   }
 
-    const columns: any = [
-        {
-          title: 'APP TITLE & PUBLISHER',
-          dataIndex: 'title',
-          key: 'title',
-          sorter: true,
-          render: (title: string, appData: IAppOutput) => <AppTitlePublisher {...appData} />,
-        },
-        {
-          title: 'DAILY AVAILS',
-          dataIndex: 'avails',
-          key: 'avails',
-          sorter: true,
-        },
-        {
-          title: 'DATE ADDED',
-          dataIndex: 'createdAt',
-          key: 'createdAt',
-          sorter: true,
-          render: (createdAt: string) => <span> {convertDate(createdAt)} </span>,
-        },
-        {
-          title: 'UPDATED ON',
-          dataIndex: 'updatedAt',
-          key: 'updatedAt',
-          sorter: true,
-          render: (updatedAt: string) => <span> {convertDate(updatedAt)} </span>
-        },
-        {
-          title: 'AGE',
-          dataIndex: ['appStoreInfo' ,'contentRating'],
-          key: 'contentRating',
-          render: (title: string, appData: IAppOutput) => <span> { appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating } </span>
-        },
-        {
-          title: 'CATEGORY',
-          key: 'storeCategories',
-          dataIndex: ['googlePlayStoreInfo' ,'genre'],
-        },
-        {
-          title: '',
-          key: 'edit',
-          dataIndex: '_id',
-          render: (_id: string) => <EditOutlined  className='edit-icon'  onClick={() => handleEdit(_id)} />
-        },
-      ];
+  const columns: any = [
+    {
+      title: 'STATUS',
+      dataIndex: 'isDeleted',
+      key: 'isDeleted',
+      render: (isDeleted: boolean) => <Switch checked={isDeleted} />
+    },
+    {
+      title: 'APP TITLE & PUBLISHER',
+      dataIndex: 'title',
+      key: 'title',
+      sorter: true,
+      render: (title: string, appData: IAppOutput) => <AppTitlePublisher {...appData} />,
+    },
+    {
+      title: '',
+      dataIndex: 'featured',
+      key: 'featured',
+      render: (featured: boolean) => <span className='featured-cell'> 
+                {featured && <>
+                <span className='circle'></span>
+                <span> Featured </span>
+                </>} 
+                </span>,
+    },
+    {
+      title: 'DAILY AVAILS',
+      dataIndex: 'avails',
+      key: 'avails',
+      sorter: true,
+      render: (avails: string) => <span className='avail-cell'> {avails} </span>
+    },
+    {
+      title: 'DATE ADDED',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      sorter: true,
+      render: (createdAt: string) => <span className='date-cell'> {convertDate(createdAt)} </span>,
+    },
+    {
+      title: 'UPDATED ON',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      sorter: true,
+      render: (updatedAt: string) => <span className='date-cell'> {convertDate(updatedAt)} </span>
+    },
+    {
+      title: 'AGE',
+      dataIndex: ['appStoreInfo', 'contentRating'],
+      key: 'contentRating',
+      render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
+    },
+    {
+      title: 'CATEGORY',
+      key: 'genre',
+      dataIndex: ['appStoreInfo', 'genre'],
+      render: (title: string, appData: IAppOutput) => <span className='category-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.genre} </span>
+    },
+    {
+      title: '',
+      key: 'edit',
+      dataIndex: '_id',
+      render: (_id: string) => <EditOutlined className='edit-icon' onClick={() => handleEdit(_id)} />
+    },
+  ];
 
-    return (
-        <Card>
-          <Table 
-            loading={isLoading}
-            columns={columns} 
-            dataSource={appsData?.items}
-            rowKey={'_id'}
-            onChange={handleTableChange}
-            pagination={{
-              defaultPageSize: 5,
-              current: pageIndex + 1,
-              total: appsData?.totalCount,
-              pageSizeOptions: ['5', '10', '20', '50'],
+  const itemRender = (current: any, type: string, originalElement: any) => {
+
+    if (type === 'prev') {
+      return (
+        <div className={`${pageIndex === 0 ? 'disable-element' : ''}`} >
+          <LeftOutlined />
+          <a>prev</a>
+        </div>);
+    }
+    if (type === 'next') {
+      return <><a>next</a> <RightOutlined /> </>;
+    }
+    return originalElement;
+  }
+
+  return (
+    <div className='layout-color'>
+      <div className='layout'>
+        <Input className='search-input' placeholder="Search app name" />
+        <Table
+          loading={isLoading}
+          columns={columns}
+          dataSource={appsData?.items}
+          rowKey={'_id'}
+          onChange={handleTableChange}
+          pagination={{
+            pageSizeOptions: ['5', '10', '20', '50'],
+            defaultPageSize: 5,
+            current: pageIndex + 1,
+            total: appsData?.totalCount,
+            itemRender: itemRender
           }}
         />
-        </Card>
-    )
+      </div>
+    </div>
+  )
 }
 export default AppInventoryList;
