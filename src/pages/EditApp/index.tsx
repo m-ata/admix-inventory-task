@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
-import './index.scss';
+import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { InfoCircleOutlined } from '@ant-design/icons';
+//css import
+import './index.scss';
+//custom imports
 import { IAppOutput } from './../../interfaces';
+import { updateEnrichedApp } from './../../api/admixplay.enriched.update';
 
 const EditApp = () => {
 
@@ -11,10 +15,21 @@ const EditApp = () => {
 
     const [formData, setFormData] = useState<IAppOutput>(appInfo);
 
+    const navigate = useNavigate();
+
     const { _id, title, description, googlePlayStoreInfo, appStoreInfo, featured, isDeleted } = formData;
 
-    const handleSetFormData = (fireld: string, value: any) => {
+    const handleSetFormData = (field: string, value: any) => {
+        setFormData({...formData, [field]: value});
+    }
 
+    const handleSave = async () => {
+       const response = await updateEnrichedApp(_id, formData);
+       navigate('/');
+    }
+
+    const handleCancel = () => {
+        navigate('/');
     }
 
     return (
@@ -22,8 +37,8 @@ const EditApp = () => {
             <PageHeader
                 title="Inventory / Edit"
                 extra={[
-                    <Button key="1" type='text' className='cancel'>Cancel</Button>,
-                    <Button key="2" className='save'> Save </Button>
+                    <Button key="1" type='text' className='cancel' onClick={handleCancel}>Cancel</Button>,
+                    <Button key="2" className='save' onClick={handleSave}> Save </Button>
                 ]}
             />
             <div className={'form-layout'}>
@@ -50,7 +65,7 @@ const EditApp = () => {
                                 className='inline-items'
                             >
                                 <InfoCircleOutlined />
-                                <Switch size='small' defaultChecked={featured} />
+                                <Switch size='small' defaultChecked={featured} checked={featured} onChange={(value: boolean) => handleSetFormData('featured', value)} />
                             </Form.Item>
                         </Col>
                         <Col span={4}>
@@ -60,7 +75,7 @@ const EditApp = () => {
                                 className='inline-items'
                             >
                                 <InfoCircleOutlined />
-                                <Switch size='small' defaultChecked={isDeleted} />
+                                <Switch size='small' defaultChecked={isDeleted} checked={isDeleted} onChange={(value: boolean) => handleSetFormData('isDeleted', value)} />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -70,7 +85,7 @@ const EditApp = () => {
                                 label="App Title"
                                 name="title"
                             >
-                                <Input defaultValue={title} value={title} />
+                                <Input defaultValue={title} value={title} onChange={(e: any) => handleSetFormData('title', e.target.value)} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
@@ -122,7 +137,14 @@ const EditApp = () => {
                                 label="Description"
                                 name="description"
                             >
-                                <Input.TextArea defaultValue={description} value={description} autoSize={{minRows: 8, maxRows: 12}} placeholder="Please write app descriptio here" minLength={8} />
+                                <Input.TextArea 
+                                    defaultValue={description} 
+                                    value={description} 
+                                    autoSize={{minRows: 8, maxRows: 12}} 
+                                    placeholder="Please write app descriptio here" 
+                                    minLength={8} 
+                                    onChange={(e: any) => handleSetFormData('description', e.target.value)}
+                                />
                             </Form.Item>
                         </Col>
                     </Row>
