@@ -7,8 +7,8 @@ export const updateEnrichedApp = async (id: string, body: IAppOutput) => {
 		const response: AxiosResponse<any> = await axios.put(`challenge-v1/enrich/update/${id}`, body, {
 				headers: requestHeader
 		});
-		return response?.data?.data;
+		return response;
 	} catch (err) {
-		console.log('err ', err)
+		return err;
 	}
 }

@@ -3,6 +3,7 @@ import { PageHeader, Button, Divider, Form, Input, Row, Col, Select, Switch, Tag
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
+import notification from 'antd/lib/notification';
 //css import
 import './index.scss';
 //custom imports
@@ -26,6 +27,17 @@ const EditApp = () => {
 
     const handleSave = async () => {
         const response = await updateEnrichedApp(_id, formData);
+        if (response?.status === 200) {
+            notification.success({
+                message: 'Success',
+                description: response.data.message
+            });
+        } else {
+            notification.error({
+                message: 'Error',
+                description: 'Something went wrong'
+            });
+        }
         navigate('/');
     }
 
