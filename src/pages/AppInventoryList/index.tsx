@@ -12,6 +12,7 @@ import './index.scss';
 import { useDispatch } from 'react-redux';
 import { setAppInfo } from './../../redux/slices/appInfo.slice';
 import AutoCompleteSearch from './../../components/AutoCompleteSearch';
+import { convertAvails } from './../../utils/convertAvails';
 
 const AppInventoryList = () => {
 
@@ -92,7 +93,7 @@ const AppInventoryList = () => {
       dataIndex: 'avails',
       key: 'avails',
       sorter: true,
-      render: (avails: string) => <span className='avail-cell'> {avails} </span>
+      render: (avails: number) => <span className='avail-cell'> {avails && convertAvails(avails)} </span>
     },
     {
       title: 'DATE ADDED',
