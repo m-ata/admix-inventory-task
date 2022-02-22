@@ -68,7 +68,7 @@ const EditApp = () => {
                 title="Inventory / Edit"
                 extra={[
                     <Button key="1" type='text' className='cancel' onClick={handleCancel}>Cancel</Button>,
-                    <Button key="2" className='save' onClick={handleSave}> Save </Button>
+                    <Button key="2" type='primary' className='save' onClick={handleSave}> Save </Button>
                 ]}
             />
             <div className={'form-layout'}>
