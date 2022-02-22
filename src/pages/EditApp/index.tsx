@@ -88,7 +88,22 @@ const EditApp = () => {
                         </Col>
                         <Col span={12}>
                             <Form.Item label="Publisher Name">
-                                <Input />
+                                <Input 
+                                    defaultValue={appStoreInfo ? appStoreInfo.studio : googlePlayStoreInfo?.studio} 
+                                    value={appStoreInfo ? appStoreInfo.studio : googlePlayStoreInfo?.studio}
+                                    onChange={(e: any) => {
+                                        if (appStoreInfo?.studio) {
+                                            const updatedAppStoreInfo = {...formData.appStoreInfo};
+                                            updatedAppStoreInfo.studio = e.target.value;
+                                            setFormData({...formData, appStoreInfo: updatedAppStoreInfo});
+                                        }
+                                        if (googlePlayStoreInfo?.studio) {
+                                            const updatedGooglePlayStoreInfo = {...formData.googlePlayStoreInfo};
+                                            updatedGooglePlayStoreInfo.studio = e.target.value;
+                                            setFormData({...formData, googlePlayStoreInfo: updatedGooglePlayStoreInfo});
+                                        }
+                                    }}
+                                />
                             </Form.Item>
                         </Col>
                     </Row>
