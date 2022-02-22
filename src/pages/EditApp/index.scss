@@ -2,6 +2,11 @@
     padding: 16px 24px;
 }
 
+.disable {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .save {
     background: #2622B5 !important;
     border-radius: 10px !important;

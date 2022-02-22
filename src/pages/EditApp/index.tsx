@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { InfoCircleOutlined, CloseOutlined } from '@ant-design/icons';
 import notification from 'antd/lib/notification';
+import clsx from 'clsx';
 //css import
 import './index.scss';
 //custom imports
@@ -16,6 +17,7 @@ const EditApp = () => {
 
     const [formData, setFormData] = useState<IAppOutput>(appInfo);
     const [tmpTagValue, setTmpTagValue] = useState<string>('');
+    const [isRequestSend, setRequestSend] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -26,19 +28,21 @@ const EditApp = () => {
     }
 
     const handleSave = async () => {
+        setRequestSend(true);
         const response = await updateEnrichedApp(_id, formData);
+        setRequestSend(false);
         if (response?.status === 200) {
             notification.success({
                 message: 'Success',
                 description: response.data.message
             });
+            navigate('/');
         } else {
             notification.error({
                 message: 'Error',
                 description: 'Something went wrong'
             });
         }
-        navigate('/');
     }
 
     const handleCancel = () => {
@@ -59,7 +63,7 @@ const EditApp = () => {
     }
 
     return (
-        <div>
+        <div className={clsx({'disable': isRequestSend})}>
             <PageHeader
                 title="Inventory / Edit"
                 extra={[
