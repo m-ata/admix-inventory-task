@@ -96,6 +96,7 @@ const EditApp = () => {
         }
     }
 
+    // push tmpTag into tags array
     const handleAddTag = (tag: string) => {
         const updatedTags = [...tags];
         updatedTags.push(tag);
@@ -178,7 +179,7 @@ const EditApp = () => {
                                 <Input 
                                     value={tmpTagValue}
                                     onChange={(e) => setTmpTagValue(e.target.value)}
-                                    onBlur={(e: any) => handleAddTag(e.target.value)} 
+                                    onBlur={(e: any) => setTmpTagValue('')} 
                                     onKeyPress={(e: any) => e?.charCode === 13 && handleAddTag(e.target.value)} 
                                 />
                                 {
