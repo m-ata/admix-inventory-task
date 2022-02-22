@@ -25,11 +25,16 @@ export interface IAppOutput {
     _id: string,
     updatedAt: string,
     createdAt: string,
-    googlePlayStoreInfo: StoreInfo,
-    appStoreInfo: StoreInfo,
+    googlePlayStoreInfo?: StoreInfo,
+    appStoreInfo?: StoreInfo,
     avails: number,
-    metrics: AppMetrics
-    storeCategories: string,
+    metrics: AppMetrics,
+    description?: string,
+    featured?: boolean,
+    isDeleted?: boolean
+}
+export interface IAppInfo {
+    appInfo: IAppOutput;
 }
 export interface IFilter {
     name: string,
@@ -42,7 +47,7 @@ export interface ISort {
     desc: boolean
 }
 
-interface StoreInfo {
+export interface StoreInfo {
     contentRating: string,
     genre: string,
     icon: string,
@@ -53,7 +58,7 @@ interface StoreInfo {
     url: string
 }
 
-interface AppMetrics {
+export interface AppMetrics {
     dau: number,
     mau: number,
     avgTimePerSession: number,

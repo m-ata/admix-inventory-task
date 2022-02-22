@@ -9,6 +9,8 @@ import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 import { defaultRequest } from './../../constant';
 import './index.scss';
+import { useDispatch } from 'react-redux';
+import { setAppInfo } from './../../redux/slices/appInfo.slice'
 
 const AppInventoryList = () => {
 
@@ -17,6 +19,8 @@ const AppInventoryList = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { sorts, pageIndex } = requestBody;
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -31,8 +35,9 @@ const AppInventoryList = () => {
     setIsLoading(false);
   }
 
-  const handleEdit = (id: string) => {
-    navigate(`/edit-app/${id}`)
+  const handleEdit = (appData: IAppOutput) => {
+    dispatch(setAppInfo({ ...appData }));
+    navigate(`/edit-app`)
   }
 
   const handleTableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
@@ -118,7 +123,7 @@ const AppInventoryList = () => {
       title: '',
       key: 'edit',
       dataIndex: '_id',
-      render: (_id: string) => <EditOutlined className='edit-icon' onClick={() => handleEdit(_id)} />
+      render: (_id: string, appData: IAppOutput) => <EditOutlined className='edit-icon' onClick={() => handleEdit(appData)} />
     },
   ];
 
