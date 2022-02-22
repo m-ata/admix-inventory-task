@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Switch, Input } from 'antd';
+import { Table, Switch } from 'antd';
 import { EditOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
@@ -10,7 +10,8 @@ import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
 import { defaultRequest } from './../../constant';
 import './index.scss';
 import { useDispatch } from 'react-redux';
-import { setAppInfo } from './../../redux/slices/appInfo.slice'
+import { setAppInfo } from './../../redux/slices/appInfo.slice';
+import AutoCompleteSearch from './../../components/AutoCompleteSearch';
 
 const AppInventoryList = () => {
 
@@ -18,7 +19,7 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { sorts, pageIndex } = requestBody;
+  const { sorts, pageIndex, filters } = requestBody;
 
   const dispatch = useDispatch();
 
@@ -142,10 +143,29 @@ const AppInventoryList = () => {
     return originalElement;
   }
 
+  const handleSearchSelect = (input: string) => {
+    const updatedFilters = [...filters];
+    const filtersWithTitle = updatedFilters.find(f => f.name === 'title');
+    if (filtersWithTitle) {
+      const index = updatedFilters?.indexOf(filtersWithTitle);
+      updatedFilters[index].value = input
+    } else {
+      updatedFilters.push({
+        name: 'title',
+        value: input,
+        operator: 'like'
+      })
+    }
+    setRequestBody({ ...requestBody, filters: updatedFilters });
+  }
+
   return (
     <div className='layout-color'>
       <div className='layout'>
-        <Input className='search-input' placeholder="Search app name" />
+        <AutoCompleteSearch 
+          optionList={appsData?.items?.map( x => { return {value: x.title}})} 
+          handleSearchSelect={handleSearchSelect}
+        />
         <Table
           loading={isLoading}
           columns={columns}
