@@ -6,7 +6,7 @@ import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
-import { IFetchppRequestBody, IFetchResponseData, IFilter, ITableFilters } from './../../interfaces';
+import { IFetchppRequestBody, IFetchResponseData, IFilter, ITableFilters, ITableFileDS } from './../../interfaces';
 import { DEFAULT_REQUEST, CATEGORIES, TOTAL_COUNT } from './../../constant';
 import './index.scss';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,7 @@ const AppInventoryList = () => {
     setUniqueContentRating(data.items);
   }
 
-  const setUniqueContentRating = (apps: IAppOutput[]) => { // sets unique contentRaring to store for Age filter
+  const setUniqueContentRating = (apps: IAppOutput[]) => { // set unique values to store for filters
     const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
         type: 'googlePlayStoreInfo.contentRating',
@@ -59,8 +59,32 @@ const AppInventoryList = () => {
         value: val
       }
     });
+    const uniqueAvails = apps.map(item => item?.avails)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
+      return {
+        field: 'avails',
+        title: convertAvails(val),
+        value: val,
+        operator: 'in'
+      }
+    })
+    const allUniqueAvails: ITableFileDS[] = [];
+    uniqueAvails.forEach((avail: any) => {
+      allUniqueAvails.push(avail);
+      allUniqueAvails.push({
+        field: 'avails',
+        title: `> ${convertAvails(avail.value)}`,
+        value: avail.value,
+        operator: 'gt'
+      });
+      allUniqueAvails.push({
+        field: 'avails',
+        title: `< ${convertAvails(avail.value)}`,
+        value: avail.value,
+        operator: 'lt'
+      });
+    })
     const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
-    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings}));
+    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings, avails: allUniqueAvails}));
   }
 
   const fetchAppList = async () => {
@@ -150,6 +174,15 @@ const AppInventoryList = () => {
                 if (googlePlayStorInfo.value) {
                   updatedFilters.push(googlePlayStorInfo);
                 }
+              } else {
+                tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
+                  const filterValues = key.split('-');
+                  updatedFilters.push({
+                    name:  filterValues[0],
+                    value: filterValues[1],
+                    operator: filterValues[2]
+                  });
+                })
               }
             }
           });
@@ -188,7 +221,13 @@ const AppInventoryList = () => {
       dataIndex: 'avails',
       key: 'avails',
       sorter: true,
-      render: (avails: number) => <span className='avail-cell'> {avails && convertAvails(avails)} </span>
+      filters: appFilters.avails.map((avail: ITableFileDS) => {
+        return {
+          text: avail.title,
+          value: `${avail.field}-${avail.value}-${avail.operator}`
+        }
+      }),
+      render: (avails: number) => <span className='avail-cell'> {avails} </span>
     },
     {
       title: 'DATE ADDED',

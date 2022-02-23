@@ -39,7 +39,13 @@ export interface IAppInfo {
 }
 export interface ITableFilters {
     contentRatings?: any[],
-    avails?: string[]
+    avails?: ITableFileDS[]
+}
+export interface ITableFileDS {
+    field: string;
+    value: String[] | string;
+    operator: string;
+    title?: string;
 }
 export interface IFilter {
     name: string | String[],
