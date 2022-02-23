@@ -1,4 +1,4 @@
-import { ISort, IFilter, ITableFilters } from './../interfaces';
+import { ISort, IFilter } from './../interfaces';
 
 export const useSorts = (sorts: ISort[], field: string, order: string) => {
     const updatedSorts = [...sorts];
