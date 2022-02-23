@@ -35,10 +35,22 @@ export interface IAppOutput {
 }
 export interface IAppInfo {
     appInfo: IAppOutput;
+    filters?: ITableFilters
+}
+export interface ITableFilters {
+    contentRatings?: ITableFileDS[];
+    avails?: ITableFileDS[];
+    updatedAt?: ITableFileDS[];
+}
+export interface ITableFileDS {
+    field: string;
+    value: String[] | string;
+    operator: string;
+    title?: string;
 }
 export interface IFilter {
-    name: string,
-    value: String[] | string,
+    name: string | String[],
+    value: string | String[],
     operator: string
 }
 
@@ -63,4 +75,19 @@ export interface AppMetrics {
     mau: number,
     avgTimePerSession: number,
     sessions: number
+}
+
+export interface IAutoCompleteOption {
+    value: string
+}
+
+// prop types interfaces
+
+export interface IAutoCompleteSearchProps {
+    isDisable: boolean,
+    handleSearchSelect: SearchSelect
+}
+
+interface SearchSelect {
+    (data: string): void
 }

@@ -9,11 +9,17 @@ export const appInfoSlice = createSlice({
       state.appInfo = action.payload;
     },
     resetAppInfo: (state) => {
-      state = initialState;
+      state.appInfo = initialState.appInfo;
     },
+    setFilters: (state, action) => {
+      state.filters = action.payload
+    },
+    resetFilters: (state) => {
+      state.filters = initialState.filters
+    }
   },
 });
 
-export const { setAppInfo, resetAppInfo } = appInfoSlice.actions;
+export const { setAppInfo, resetAppInfo, setFilters, resetFilters } = appInfoSlice.actions;
 
 export default appInfoSlice.reducer;
