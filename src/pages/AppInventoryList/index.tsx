@@ -2,28 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { Table, Switch } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+//custom imports
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData, IFilter, ITableFilters, ITableFileDS } from './../../interfaces';
-import { DEFAULT_REQUEST, CATEGORIES, TOTAL_COUNT } from './../../constant';
-import './index.scss';
-import { useDispatch, useSelector } from 'react-redux';
+import { DEFAULT_REQUEST, CATEGORIES, TOTAL_COUNT, DEFAULT_APPS_DATA } from './../../constant';
 import { setAppInfo, setFilters } from './../../redux/slices/appInfo.slice';
 import AutoCompleteSearch from './../../components/AutoCompleteSearch';
 import { convertAvails } from './../../utils/convertAvails';
 import { useSorts, useFilters } from './../../utils/sortFilters';
+//scss imports
+import './index.scss';
 
 const AppInventoryList = () => {
 
-  const [appsData, setAppsData] = useState<IFetchResponseData>(null);
+  //local states
+  const [appsData, setAppsData] = useState<IFetchResponseData>(DEFAULT_APPS_DATA);
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(DEFAULT_REQUEST);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const appFilters: ITableFilters = useSelector((state: any) => state.app.filters);
 
   const { sorts, pageIndex, filters } = requestBody;
+  const { items, totalCount  } = appsData
 
   const dispatch = useDispatch();
 
@@ -247,13 +251,13 @@ const AppInventoryList = () => {
         <Table
           loading={isLoading}
           columns={columns}
-          dataSource={appsData?.items}
+          dataSource={items || []}
           rowKey={'_id'}
           onChange={handleTableChange}
           pagination={{
             pageSizeOptions: ['5', '10', '20', '50'],
             current: pageIndex + 1,
-            total: appsData?.totalCount,
+            total: totalCount || 0,
           }}
         />
       </div>

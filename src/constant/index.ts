@@ -1,10 +1,16 @@
-import { IFilter, ISort, StoreInfo, AppMetrics, IAppInfo } from './../interfaces';
+import { IFilter, ISort, StoreInfo, AppMetrics, IAppInfo, IAppOutput } from './../interfaces';
 export const DEFAULT_REQUEST = {
 	pageIndex: 0,
 	pageSize: 10,
 	operator: '',
 	filters: [] as IFilter[],
 	sorts: [] as ISort[]
+}
+
+export const DEFAULT_APPS_DATA = {
+	dau: '',
+    items: [] as IAppOutput[],
+    totalCount: 0
 }
 
 export const requestHeader = {
