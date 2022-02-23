@@ -37,8 +37,8 @@ export interface IAppInfo {
     appInfo: IAppOutput;
 }
 export interface IFilter {
-    name: string,
-    value: String[] | string,
+    name: string | String[],
+    value: string | String[],
     operator: string
 }
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Switch } from 'antd';
-import { EditOutlined, LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { useNavigate } from "react-router-dom";
 import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
-import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
-import { DEFAULT_REQUEST } from './../../constant';
+import { IFetchppRequestBody, IFetchResponseData, IFilter } from './../../interfaces';
+import { DEFAULT_REQUEST, CATEGORIES } from './../../constant';
 import './index.scss';
 import { useDispatch } from 'react-redux';
 import { setAppInfo } from './../../redux/slices/appInfo.slice';
@@ -42,7 +42,7 @@ const AppInventoryList = () => {
     navigate(`/edit-app`)
   }
 
-  const handleTableChange = (pagination: any, filters: any, sorter: any, extra: any) => {
+  const handleTableChange = (pagination: any, tableFilters: any, sorter: any, extra: any) => {
     switch (extra['action']) {
       case 'sort':
         if (sorter?.field && sorter?.order) {
@@ -60,6 +60,40 @@ const AppInventoryList = () => {
       case 'paginate':
         setRequestBody({ ...requestBody, pageIndex: pagination.current - 1, pageSize: pagination.pageSize });
         break;
+      case 'filter':
+        const allFilters: any = Object.keys(tableFilters);
+        const updatedFilters: IFilter[] = [];
+        if (allFilters.length > 0) {
+          allFilters?.forEach((filter: string) => {
+            let singleFilter = {
+              name: '' as string [] | string,
+              value: '' as string [] | string,
+              operator: ''
+            }
+            if (filter === 'genre') {
+              const values: string[] = []
+              tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
+                const filterValues = key.split('-');
+                if (data?.length === 1) {
+                  singleFilter = {
+                    name:  JSON.parse(filterValues[0]),
+                    value: filterValues[1],
+                    operator: filterValues[2]
+                  }
+                } else {
+                  values.push(filterValues[1]);
+                  singleFilter = {
+                    name:  JSON.parse(filterValues[0]),
+                    value: values,
+                    operator: filterValues[2]
+                  }
+                }
+              })
+            }
+            updatedFilters.push(singleFilter);
+          });
+        }
+        setRequestBody({...requestBody, filters: updatedFilters});
     }
   }
 
@@ -119,6 +153,12 @@ const AppInventoryList = () => {
       title: 'CATEGORY',
       key: 'genre',
       dataIndex: ['appStoreInfo', 'genre'],
+      filters: CATEGORIES.map(cat => {
+        return {
+          text: cat.name,
+          value: `["googlePlayStoreInfo.genre", "appStoreInfo.genre"]-${cat.name}-in`
+        }
+      }),
       render: (title: string, appData: IAppOutput) => <span className='category-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.genre} </span>
     },
     {
