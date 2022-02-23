@@ -43,10 +43,10 @@ const AppInventoryList = () => {
 
   const fetchFullAppList = async (request: IFetchppRequestBody) => {
     const data = await fetchAdmixPlayInventory(request);
-    setUniqueContentRating(data.items);
+    setUniqueFilterValues(data.items);
   }
 
-  const setUniqueContentRating = (apps: IAppOutput[]) => { // set unique values to store for filters
+  const setUniqueFilterValues = (apps: IAppOutput[]) => { // set unique values to store for filters
     const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
         field: 'googlePlayStoreInfo.contentRating',
@@ -65,28 +65,35 @@ const AppInventoryList = () => {
       return {
         field: 'avails',
         title: convertAvails(val),
-        value: val,
+        value: val.toString(),
         operator: 'in'
       }
     })
-    const allUniqueAvails: ITableFileDS[] = [];
-    uniqueAvails.forEach((avail: any) => {
-      allUniqueAvails.push(avail);
-      allUniqueAvails.push({
-        field: 'avails',
-        title: `> ${convertAvails(avail.value)}`,
-        value: avail.value,
+    const allUniqueAvails: ITableFileDS[] = handleGTFilterValues('avails', uniqueAvails as ITableFileDS[]);
+
+    const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
+    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings, avails: allUniqueAvails}));
+  }
+
+  // set all filter values with greater and less than
+  const handleGTFilterValues = (field: string, data: ITableFileDS[]) => {
+    const updatedData: ITableFileDS[] = [];
+    data.forEach((d: ITableFileDS) => {
+      updatedData.push(d);
+      updatedData.push({
+        field: field,
+        title: `> ${convertAvails(Number(d.value))}`,
+        value: d.value,
         operator: 'gt'
       });
-      allUniqueAvails.push({
-        field: 'avails',
-        title: `< ${convertAvails(avail.value)}`,
-        value: avail.value,
+      updatedData.push({
+        field: field,
+        title: `< ${convertAvails(Number(d.value))}`,
+        value: d.value,
         operator: 'lt'
       });
     })
-    const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
-    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings, avails: allUniqueAvails}));
+    return updatedData;
   }
 
   const fetchAppList = async () => {
