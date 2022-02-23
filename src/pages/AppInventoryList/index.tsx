@@ -43,10 +43,10 @@ const AppInventoryList = () => {
 
   const fetchFullAppList = async (request: IFetchppRequestBody) => {
     const data = await fetchAdmixPlayInventory(request);
-    getUniqueContentRating(data.items);
+    setUniqueContentRating(data.items);
   }
 
-  const getUniqueContentRating = (apps: IAppOutput[]) => {
+  const setUniqueContentRating = (apps: IAppOutput[]) => { // sets unique contentRaring to store for Age filter
     const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
         type: 'googlePlayStoreInfo.contentRating',
@@ -60,7 +60,7 @@ const AppInventoryList = () => {
       }
     });
     const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
-    dispatch(setFilters({...appFilters, actions: uniqueContentRatings}));
+    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings}));
   }
 
   const fetchAppList = async () => {
@@ -76,7 +76,6 @@ const AppInventoryList = () => {
   }
 
   const handleTableChange = (pagination: any, tableFilters: any, sorter: any, extra: any) => {
-    console.log(tableFilters);
     switch (extra['action']) {
       case 'sort':
         if (sorter?.field && sorter?.order) {
@@ -209,10 +208,10 @@ const AppInventoryList = () => {
       title: 'AGE',
       dataIndex: ['appStoreInfo', 'contentRating'],
       key: 'contentRating',
-      filters: appFilters.actions.map(action => {
+      filters: appFilters.contentRatings.map(contentRating => {
         return {
-          text: action.value,
-          value: `${action.type}-${action.value}-in`
+          text: contentRating.value,
+          value: `${contentRating.type}-${contentRating.value}-in`
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>

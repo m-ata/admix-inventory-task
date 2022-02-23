@@ -38,7 +38,7 @@ export interface IAppInfo {
     filters?: ITableFilters
 }
 export interface ITableFilters {
-    actions?: any[],
+    contentRatings?: any[],
     avails?: string[]
 }
 export interface IFilter {

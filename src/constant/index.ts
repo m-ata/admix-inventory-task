@@ -32,7 +32,7 @@ export const initialState: IAppInfo = {
 		isDeleted: false
 	},
 	filters: {
-		actions: [],
+		contentRatings: [],
 		avails: []
 	}
 }
