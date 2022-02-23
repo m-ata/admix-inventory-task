@@ -49,14 +49,16 @@ const AppInventoryList = () => {
   const setUniqueContentRating = (apps: IAppOutput[]) => { // set unique values to store for filters
     const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
-        type: 'googlePlayStoreInfo.contentRating',
-        value: val
+        field: 'googlePlayStoreInfo.contentRating',
+        value: val,
+        operator: 'in'
       }
     });
     const uniqueAppStoreInfoRatings = apps.map(item => item?.appStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
-        type: 'appStoreInfo.contentRating',
-        value: val
+        field: 'appStoreInfo.contentRating',
+        value: val,
+        operator: 'in'
       }
     });
     const uniqueAvails = apps.map(item => item?.avails)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
@@ -227,7 +229,7 @@ const AppInventoryList = () => {
           value: `${avail.field}-${avail.value}-${avail.operator}`
         }
       }),
-      render: (avails: number) => <span className='avail-cell'> {avails} </span>
+      render: (avails: number) => <span className='avail-cell'> {avails && convertAvails(avails)} </span>
     },
     {
       title: 'DATE ADDED',
@@ -247,10 +249,10 @@ const AppInventoryList = () => {
       title: 'AGE',
       dataIndex: ['appStoreInfo', 'contentRating'],
       key: 'contentRating',
-      filters: appFilters.contentRatings.map(contentRating => {
+      filters: appFilters.contentRatings.map((contentRating: ITableFileDS) => {
         return {
           text: contentRating.value,
-          value: `${contentRating.type}-${contentRating.value}-in`
+          value: `${contentRating.field}-${contentRating.value}-${contentRating.operator}`
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
