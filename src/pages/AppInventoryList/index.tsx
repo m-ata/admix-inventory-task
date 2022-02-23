@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAppInfo, setFilters } from './../../redux/slices/appInfo.slice';
 import AutoCompleteSearch from './../../components/AutoCompleteSearch';
 import { convertAvails } from './../../utils/convertAvails';
+import { useSorts } from './../../utils/sortFilters';
 
 const AppInventoryList = () => {
 
@@ -122,14 +123,7 @@ const AppInventoryList = () => {
     switch (extra['action']) {
       case 'sort':
         if (sorter?.field && sorter?.order) {
-          const updatedSorts = [...sorts];
-          const sortWithExistedField = updatedSorts.find(s => s.field === sorter.field);
-          if (sortWithExistedField) {
-            const index = updatedSorts?.indexOf(sortWithExistedField);
-            updatedSorts[index] = { field: sorter.field, desc: sorter?.order === 'descend' ? true : false }
-          } else {
-            updatedSorts.push({ field: sorter.field, desc: sorter?.order === 'descend' ? true : false })
-          }
+          const updatedSorts = useSorts(sorts, sorter.field, sorter?.order);
           setRequestBody({ ...requestBody, sorts: updatedSorts });
         }
         break;
