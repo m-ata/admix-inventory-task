@@ -163,7 +163,7 @@ const AppInventoryList = () => {
   return (
     <div className='layout-color'>
       <div className='layout'>
-        <AutoCompleteSearch isdisable={isLoading} handleSearchSelect={handleSearchSelect} />
+        <AutoCompleteSearch isDisable={isLoading} handleSearchSelect={handleSearchSelect} />
         <Table
           loading={isLoading}
           columns={columns}

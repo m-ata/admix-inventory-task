@@ -64,3 +64,18 @@ export interface AppMetrics {
     avgTimePerSession: number,
     sessions: number
 }
+
+export interface IAutoCompleteOption {
+    value: string
+}
+
+// prop types interfaces
+
+export interface IAutoCompleteSearchProps {
+    isDisable: boolean,
+    handleSearchSelect: SearchSelect
+}
+
+interface SearchSelect {
+    (data: string): void
+}

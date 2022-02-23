@@ -3,17 +3,17 @@ import { Input, AutoComplete, Spin } from 'antd';
 import { SearchOutlined, LoadingOutlined } from '@ant-design/icons';
 import debounce from 'lodash.debounce';
 //custom imports
-import { IFetchppRequestBody } from '../../interfaces';
+import { IFetchppRequestBody, IAutoCompleteSearchProps, IAutoCompleteOption } from '../../interfaces';
 import { TOTAL_COUNT } from '../../constant';
 import { fetchAdmixPlayInventory } from '../../api/admixplay.fetch';
 //scss import
 import './index.scss';
 
-const AutoCompleteSearch = (props: any) => {
+const AutoCompleteSearch = (props: IAutoCompleteSearchProps) => {
 
     const { handleSearchSelect, isDisable } = props;
 
-    const [suggestions, setSuggestions] = useState<any[]>([]);
+    const [suggestions, setSuggestions] = useState<IAutoCompleteOption[]>([]);
     const [isRequestSend, setRequestSend] = useState<boolean>(false);
 
     // call when user type on search input and set req body with debounce
@@ -51,7 +51,7 @@ const AutoCompleteSearch = (props: any) => {
     }
 
 
-    const onSelect = (data: string) => {
+    const onSelect = (data: string) => { // handle  onSelect event when user select
         handleSearchSelect(data);
     };
 
@@ -61,9 +61,10 @@ const AutoCompleteSearch = (props: any) => {
             className='auto-complete-search'
             onSearch={onSearch}
             onSelect={onSelect}
-            onKeyDown={(e: any) => e?.keyCode === 13 && handleSearchSelect(e?.target?.value)}
+            onKeyDown={(e: any) => e?.keyCode === 13 && handleSearchSelect(e?.target?.value)} // enter key handle search
         >
             <Input 
+                allowClear
                 disabled={isDisable} 
                 placeholder="Search app name" 
                 prefix={isRequestSend ? <Spin indicator={<LoadingOutlined className='loader-icon' />} /> : <SearchOutlined />} 
