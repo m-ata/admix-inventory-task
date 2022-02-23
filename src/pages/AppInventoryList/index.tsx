@@ -21,7 +21,7 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(DEFAULT_REQUEST);
   const [isLoading, setIsLoading] = useState(false);
 
-  const appFilters: ITableFilters = useSelector((state: any) => state.appInfo.filters);
+  const appFilters: ITableFilters = useSelector((state: any) => state.app.filters);
 
   const { sorts, pageIndex, filters } = requestBody;
 

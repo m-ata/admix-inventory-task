@@ -14,7 +14,7 @@ import { CATEGORIES } from '../../constant';
 
 const EditApp = () => {
 
-    const appInfo = useSelector((state: any) => state.appInfo.appInfo);
+    const appInfo = useSelector((state: any) => state.app.appInfo);
 
     const [formData, setFormData] = useState<IAppOutput>(appInfo);
     const [categories, setCategories] = useState<string[]>([]);
