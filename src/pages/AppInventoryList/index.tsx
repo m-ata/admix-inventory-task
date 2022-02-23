@@ -129,21 +129,6 @@ const AppInventoryList = () => {
     },
   ];
 
-  const itemRender = (current: any, type: string, originalElement: any) => {
-
-    if (type === 'prev') {
-      return (
-        <div className={`${pageIndex === 0 ? 'disable-element' : ''}`} >
-          <LeftOutlined />
-          <a>prev</a>
-        </div>);
-    }
-    if (type === 'next') {
-      return <><a>next</a> <RightOutlined /> </>;
-    }
-    return originalElement;
-  }
-
   const handleSearchSelect = (input: string) => {
     const updatedFilters = [...filters];
     const filtersWithTitle = updatedFilters.find(f => f.name === 'title');
@@ -174,7 +159,6 @@ const AppInventoryList = () => {
             pageSizeOptions: ['5', '10', '20', '50'],
             current: pageIndex + 1,
             total: appsData?.totalCount,
-            itemRender: itemRender
           }}
         />
       </div>
