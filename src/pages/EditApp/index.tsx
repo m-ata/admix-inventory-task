@@ -16,6 +16,7 @@ const EditApp = () => {
 
     const appInfo = useSelector((state: any) => state.app.appInfo);
 
+    //local states
     const [formData, setFormData] = useState<IAppOutput>(appInfo);
     const [categories, setCategories] = useState<string[]>([]);
     const [tmpTagValue, setTmpTagValue] = useState<string>('');
@@ -27,10 +28,10 @@ const EditApp = () => {
 
     useEffect(() => {
         if (appStoreInfo?.genre) {
-            setCategories(appStoreInfo.genre.split(','));
+            setCategories(appStoreInfo.genre.trim().split(',').map(g => g.trim())); // data has so many space so we are applying trim() here
         }
         if (googlePlayStoreInfo?.genre) {
-            setCategories(googlePlayStoreInfo.genre.split(','));
+            setCategories(googlePlayStoreInfo.genre.trim().split(',').map(g => g.trim())); // data has so many space so we are applying trim() here
         }
     }, [googlePlayStoreInfo, appInfo]);
 
@@ -38,6 +39,7 @@ const EditApp = () => {
         setFormData({ ...formData, [field]: value });
     }
 
+    // call enrich/update api to edit app
     const handleSave = async () => {
         setRequestSend(true);
         const response = await updateEnrichedApp(_id, formData);
@@ -78,7 +80,7 @@ const EditApp = () => {
 
     // handle categories change and set genre accordingly
     const handleCategoriesChanged = (categories: string[]) => {
-        setCategories(categories);
+        setCategories(categories.filter((value, index, self) => value && self.indexOf(value) === index));
         handleSetAppGenre(categories);
     }
 
@@ -86,12 +88,12 @@ const EditApp = () => {
     const handleSetAppGenre = (categories: string[]) => {
         if (appStoreInfo) {
             const updatedAppStoreInfo = {...formData.appStoreInfo};
-            updatedAppStoreInfo.genre = categories.join(', ');
+            updatedAppStoreInfo.genre = categories.join(',');
             setFormData({...formData, appStoreInfo: updatedAppStoreInfo});
         }
         if (googlePlayStoreInfo) {
             const updatedGooglePlayStoreInfo = {...formData.googlePlayStoreInfo};
-            updatedGooglePlayStoreInfo.genre = categories.join(', ');
+            updatedGooglePlayStoreInfo.genre = categories.join(',');
             setFormData({...formData, googlePlayStoreInfo: updatedGooglePlayStoreInfo});
         }
     }
