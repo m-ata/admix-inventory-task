@@ -288,7 +288,7 @@ const AppInventoryList = () => {
       filters: CATEGORIES.map(cat => {
         return {
           text: cat.name,
-          value: `["googlePlayStoreInfo.genre", "appStoreInfo.genre"]-${cat.name}-in`
+          value: `${cat.type}-${cat.name}-${cat.operator}`
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='category-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.genre} </span>
