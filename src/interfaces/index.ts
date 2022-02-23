@@ -35,6 +35,11 @@ export interface IAppOutput {
 }
 export interface IAppInfo {
     appInfo: IAppOutput;
+    filters?: ITableFilters
+}
+export interface ITableFilters {
+    actions?: string[],
+    avails?: string[]
 }
 export interface IFilter {
     name: string | String[],

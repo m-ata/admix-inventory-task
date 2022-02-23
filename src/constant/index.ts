@@ -30,6 +30,10 @@ export const initialState: IAppInfo = {
 		description: '',
 		featured: false,
 		isDeleted: false
+	},
+	filters: {
+		actions: [],
+		avails: []
 	}
 }
 export const TOTAL_COUNT = 492; // fetch api total count

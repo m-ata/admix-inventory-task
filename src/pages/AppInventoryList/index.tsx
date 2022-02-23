@@ -6,11 +6,11 @@ import { fetchAdmixPlayInventory } from './../../api/admixplay.fetch';
 import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
-import { IFetchppRequestBody, IFetchResponseData, IFilter } from './../../interfaces';
-import { DEFAULT_REQUEST, CATEGORIES } from './../../constant';
+import { IFetchppRequestBody, IFetchResponseData, IFilter, ITableFilters } from './../../interfaces';
+import { DEFAULT_REQUEST, CATEGORIES, TOTAL_COUNT } from './../../constant';
 import './index.scss';
-import { useDispatch } from 'react-redux';
-import { setAppInfo } from './../../redux/slices/appInfo.slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAppInfo, setFilters } from './../../redux/slices/appInfo.slice';
 import AutoCompleteSearch from './../../components/AutoCompleteSearch';
 import { convertAvails } from './../../utils/convertAvails';
 
@@ -20,15 +20,36 @@ const AppInventoryList = () => {
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(DEFAULT_REQUEST);
   const [isLoading, setIsLoading] = useState(false);
 
+  const appFilters: ITableFilters = useSelector((state: any) => state.appInfo.filters);
+
   const { sorts, pageIndex, filters } = requestBody;
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
+  useEffect(() => { // fetch data in componentDidMount for filters
+    fetchFullAppList({
+      pageIndex: 0,
+      pageSize: TOTAL_COUNT,
+      filters: [],
+      sorts: []
+    });
+  }, []);
+
   useEffect(() => {
     fetchAppList();
   }, [requestBody]);
+
+  const fetchFullAppList = async (request: IFetchppRequestBody) => {
+    const data = await fetchAdmixPlayInventory(request);
+    getUniqueContentRating(data.items);
+  }
+
+  const getUniqueContentRating = (apps: IAppOutput[]) => {
+    const uniqueContentRatings = apps.map(item => item?.googlePlayStoreInfo ? item?.googlePlayStoreInfo?.contentRating : item?.appStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index);
+    dispatch(setFilters({...appFilters, actions: uniqueContentRatings}));
+  }
 
   const fetchAppList = async () => {
     setIsLoading(true);
@@ -43,6 +64,7 @@ const AppInventoryList = () => {
   }
 
   const handleTableChange = (pagination: any, tableFilters: any, sorter: any, extra: any) => {
+    console.log(tableFilters);
     switch (extra['action']) {
       case 'sort':
         if (sorter?.field && sorter?.order) {
@@ -65,32 +87,34 @@ const AppInventoryList = () => {
         const updatedFilters: IFilter[] = [];
         if (allFilters.length > 0) {
           allFilters?.forEach((filter: string) => {
-            let singleFilter = {
-              name: '' as string [] | string,
-              value: '' as string [] | string,
-              operator: ''
-            }
-            if (filter === 'genre') {
-              const values: string[] = []
-              tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
-                const filterValues = key.split('-');
-                if (data?.length === 1) {
-                  singleFilter = {
-                    name:  JSON.parse(filterValues[0]),
-                    value: filterValues[1],
-                    operator: filterValues[2]
+            if(tableFilters[filter]) {
+              let singleFilter = {
+                name: '' as string [] | string,
+                value: '' as string [] | string,
+                operator: ''
+              }
+              if (filter === 'genre' || filter === 'contentRating') {
+                const values: string[] = []
+                tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
+                  const filterValues = key.split('-');
+                  if (data?.length === 1) {
+                    singleFilter = {
+                      name:  JSON.parse(filterValues[0]),
+                      value: filterValues[1],
+                      operator: filterValues[2]
+                    }
+                  } else {
+                    values.push(filterValues[1]);
+                    singleFilter = {
+                      name:  JSON.parse(filterValues[0]),
+                      value: values,
+                      operator: filterValues[2]
+                    }
                   }
-                } else {
-                  values.push(filterValues[1]);
-                  singleFilter = {
-                    name:  JSON.parse(filterValues[0]),
-                    value: values,
-                    operator: filterValues[2]
-                  }
-                }
-              })
+                })
+              }
+              updatedFilters.push(singleFilter);
             }
-            updatedFilters.push(singleFilter);
           });
         }
         setRequestBody({...requestBody, filters: updatedFilters});
@@ -147,6 +171,12 @@ const AppInventoryList = () => {
       title: 'AGE',
       dataIndex: ['appStoreInfo', 'contentRating'],
       key: 'contentRating',
+      filters: appFilters.actions.map(action => {
+        return {
+          text: action,
+          value: `["googlePlayStoreInfo.contentRating", "appStoreInfo.contentRating"]-${action}-in`
+        }
+      }),
       render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
     },
     {
