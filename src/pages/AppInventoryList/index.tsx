@@ -42,6 +42,7 @@ const AppInventoryList = () => {
     fetchAppList(requestBody);
   }, [requestBody]);
 
+  // fetch app list from api
   const fetchAppList = async (request: IFetchppRequestBody, isInitialCall: boolean = false) => {
     setIsLoading(true);
     const data = await fetchAdmixPlayInventory(request);
@@ -132,7 +133,7 @@ const AppInventoryList = () => {
     }
   }
 
-  const columns: any = [
+  const columns = [
     {
       title: 'STATUS',
       dataIndex: 'isDeleted',
@@ -197,7 +198,7 @@ const AppInventoryList = () => {
       filters: appFilters.contentRatings.map((contentRating: ITableFileDS) => {
         return {
           text: contentRating.value,
-          value: `${contentRating.field}-${contentRating.value}-${contentRating.operator}`
+          value: `${contentRating.field}?${contentRating.value}?${contentRating.operator}` // it only accept string
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>
@@ -209,7 +210,7 @@ const AppInventoryList = () => {
       filters: CATEGORIES.map(cat => {
         return {
           text: cat.name,
-          value: `${cat.type}-${cat.name}-${cat.operator}`
+          value: `${cat.type}?${cat.name}?${cat.operator}` // it only accept string
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='category-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.genre} </span>

@@ -37,7 +37,7 @@ export const useFilters = (tableFilters: any) => {
               operator: ''
             };
             tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
-              const filterValues = key.split('-');
+              const filterValues = key.split('?');
               if (data?.length === 1) {
                 singleFilter = {
                   name:  filterValues[0],
