@@ -19,7 +19,7 @@ const AppInventoryList = () => {
 
   const [appsData, setAppsData] = useState<IFetchResponseData>(null);
   const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(DEFAULT_REQUEST);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const appFilters: ITableFilters = useSelector((state: any) => state.app.filters);
 
@@ -30,21 +30,23 @@ const AppInventoryList = () => {
   const navigate = useNavigate();
 
   useEffect(() => { // fetch data in componentDidMount for filters
-    fetchFullAppList({
+    fetchAppList({
       pageIndex: 0,
       pageSize: TOTAL_COUNT,
       filters: [],
       sorts: []
-    });
+    }, true);
   }, []);
 
-  useEffect(() => {
-    fetchAppList();
+  useEffect(() => { // fetch apps on every request body change
+    fetchAppList(requestBody);
   }, [requestBody]);
 
-  const fetchFullAppList = async (request: IFetchppRequestBody) => {
+  const fetchAppList = async (request: IFetchppRequestBody, isInitialCall: boolean = false) => {
+    setIsLoading(true);
     const data = await fetchAdmixPlayInventory(request);
-    setUniqueFilterValues(data.items);
+    setIsLoading(false);
+    isInitialCall ? setUniqueFilterValues(data.items) : setAppsData(data)
   }
 
   const setUniqueFilterValues = (apps: IAppOutput[]) => { // set unique values to store for filters
@@ -105,13 +107,6 @@ const AppInventoryList = () => {
       });
     })
     return updatedData;
-  }
-
-  const fetchAppList = async () => {
-    setIsLoading(true);
-    const data = await fetchAdmixPlayInventory(requestBody);
-    setAppsData(data);
-    setIsLoading(false);
   }
 
   const handleEdit = (appData: IAppOutput) => {
@@ -227,6 +222,7 @@ const AppInventoryList = () => {
     },
   ];
 
+  //update request body when user search
   const handleSearchSelect = (input: string) => {
     const updatedFilters = [...filters];
     const filtersWithTitle = updatedFilters.find(f => f.name === 'title');
