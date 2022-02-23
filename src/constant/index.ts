@@ -37,6 +37,7 @@ export const initialState: IAppInfo = {
 		updatedAt: [],
 	}
 }
+
 export const TOTAL_COUNT = 492; // fetch api total count
 
 // I added type field because I need to differiantiate 
