@@ -84,12 +84,12 @@ const EditApp = () => {
 
     // set app genre with comma separated string based on categories
     const handleSetAppGenre = (categories: string[]) => {
-        if (appStoreInfo?.genre) {
+        if (appStoreInfo) {
             const updatedAppStoreInfo = {...formData.appStoreInfo};
             updatedAppStoreInfo.genre = categories.join(', ');
             setFormData({...formData, appStoreInfo: updatedAppStoreInfo});
         }
-        if (googlePlayStoreInfo?.genre) {
+        if (googlePlayStoreInfo) {
             const updatedGooglePlayStoreInfo = {...formData.googlePlayStoreInfo};
             updatedGooglePlayStoreInfo.genre = categories.join(', ');
             setFormData({...formData, googlePlayStoreInfo: updatedGooglePlayStoreInfo});
@@ -180,7 +180,7 @@ const EditApp = () => {
                                     value={tmpTagValue}
                                     onChange={(e) => setTmpTagValue(e.target.value)}
                                     onBlur={(e: any) => setTmpTagValue('')} 
-                                    onKeyPress={(e: any) => e?.charCode === 13 && handleAddTag(e.target.value)} 
+                                    onKeyPress={(e: any) => e?.charCode === 13 && handleAddTag(e.target.value)} // add tags on Enter key 
                                 />
                                 {
                                     tags?.map((tag: string, index: number) => {
@@ -200,10 +200,10 @@ const EditApp = () => {
                             <Form.Item label="Categories">
                                 <Select
                                     placeholder="Choose Category"
-                                    allowClear
                                     mode='multiple'
                                     value={categories}
                                     onChange={handleCategoriesChanged}
+                                    disabled={!googlePlayStoreInfo && !appStoreInfo}
                                 >
                                     {
                                         CATEGORIES.map((cat, index) => <Select.Option  key={index} value={cat.name}> {cat.name} </Select.Option>)
