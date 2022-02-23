@@ -47,7 +47,19 @@ const AppInventoryList = () => {
   }
 
   const getUniqueContentRating = (apps: IAppOutput[]) => {
-    const uniqueContentRatings = apps.map(item => item?.googlePlayStoreInfo ? item?.googlePlayStoreInfo?.contentRating : item?.appStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index);
+    const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
+      return {
+        type: 'googlePlayStoreInfo.contentRating',
+        value: val
+      }
+    });
+    const uniqueAppStoreInfoRatings = apps.map(item => item?.appStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
+      return {
+        type: 'appStoreInfo.contentRating',
+        value: val
+      }
+    });
+    const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
     dispatch(setFilters({...appFilters, actions: uniqueContentRatings}));
   }
 
@@ -89,31 +101,57 @@ const AppInventoryList = () => {
           allFilters?.forEach((filter: string) => {
             if(tableFilters[filter]) {
               let singleFilter = {
-                name: '' as string [] | string,
+                name: '',
                 value: '' as string [] | string,
                 operator: ''
               }
               if (filter === 'genre' || filter === 'contentRating') {
-                const values: string[] = []
+                const googlePlayStorValues: string[] = [];
+                const appStorValues: string[] = [];
+                let appStorInfo: any = {
+                  name: '',
+                  value: '' as String[] | string,
+                  operator: ''
+                };
+                let googlePlayStorInfo: any = {
+                  name: '',
+                  value: '' as String[] | string,
+                  operator: ''
+                };
                 tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
                   const filterValues = key.split('-');
                   if (data?.length === 1) {
                     singleFilter = {
-                      name:  JSON.parse(filterValues[0]),
+                      name:  filterValues[0],
                       value: filterValues[1],
                       operator: filterValues[2]
                     }
                   } else {
-                    values.push(filterValues[1]);
-                    singleFilter = {
-                      name:  JSON.parse(filterValues[0]),
-                      value: values,
-                      operator: filterValues[2]
+                    if(filterValues[0].split('.')[0] === 'googlePlayStoreInfo') {
+                      googlePlayStorValues.push(filterValues[1]);
+                      googlePlayStorInfo = {
+                        name: filterValues[0],
+                        value: googlePlayStorValues,
+                        operator: filterValues[2]
+                      }
+                    }
+                    if(filterValues[0].split('.')[0] === 'appStoreInfo') {
+                      appStorValues.push(filterValues[1]);
+                      appStorInfo = {
+                        name: filterValues[0],
+                        value: appStorValues,
+                        operator: filterValues[2]
+                      }
                     }
                   }
                 })
+                if (appStorInfo.value) {
+                  updatedFilters.push(appStorInfo);
+                }
+                if (googlePlayStorInfo.value) {
+                  updatedFilters.push(googlePlayStorInfo);
+                }
               }
-              updatedFilters.push(singleFilter);
             }
           });
         }
@@ -173,8 +211,8 @@ const AppInventoryList = () => {
       key: 'contentRating',
       filters: appFilters.actions.map(action => {
         return {
-          text: action,
-          value: `["googlePlayStoreInfo.contentRating", "appStoreInfo.contentRating"]-${action}-in`
+          text: action.value,
+          value: `${action.type}-${action.value}-in`
         }
       }),
       render: (title: string, appData: IAppOutput) => <span className='age-cell'> {appData?.appStoreInfo ? title : appData?.googlePlayStoreInfo?.contentRating} </span>

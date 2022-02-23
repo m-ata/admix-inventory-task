@@ -38,7 +38,7 @@ export interface IAppInfo {
     filters?: ITableFilters
 }
 export interface ITableFilters {
-    actions?: string[],
+    actions?: any[],
     avails?: string[]
 }
 export interface IFilter {
