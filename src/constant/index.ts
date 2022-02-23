@@ -1,7 +1,7 @@
 import { IFilter, ISort, StoreInfo, AppMetrics, IAppInfo } from './../interfaces';
-export const defaultRequest = {
+export const DEFAULT_REQUEST = {
 	pageIndex: 0,
-	pageSize: 5,
+	pageSize: 10,
 	operator: '',
 	filters: [] as IFilter[],
 	sorts: [] as ISort[]

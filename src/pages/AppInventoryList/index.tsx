@@ -7,7 +7,7 @@ import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
-import { defaultRequest, TOTAL_COUNT } from './../../constant';
+import { DEFAULT_REQUEST } from './../../constant';
 import './index.scss';
 import { useDispatch } from 'react-redux';
 import { setAppInfo } from './../../redux/slices/appInfo.slice';
@@ -17,7 +17,7 @@ import { convertAvails } from './../../utils/convertAvails';
 const AppInventoryList = () => {
 
   const [appsData, setAppsData] = useState<IFetchResponseData>(null);
-  const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(defaultRequest);
+  const [requestBody, setRequestBody] = useState<IFetchppRequestBody>(DEFAULT_REQUEST);
   const [isLoading, setIsLoading] = useState(false);
 
   const { sorts, pageIndex, filters } = requestBody;
@@ -172,7 +172,6 @@ const AppInventoryList = () => {
           onChange={handleTableChange}
           pagination={{
             pageSizeOptions: ['5', '10', '20', '50'],
-            defaultPageSize: 5,
             current: pageIndex + 1,
             total: appsData?.totalCount,
             itemRender: itemRender
