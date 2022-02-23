@@ -32,3 +32,4 @@ export const initialState: IAppInfo = {
 		isDeleted: false
 	}
 }
+export const TOTAL_COUNT = 492; // fetch api total count

@@ -7,7 +7,7 @@ import AppTitlePublisher from './../../components/AppTitlePublisher';
 import { IAppOutput } from './../../interfaces';
 import { convertDate } from './../../utils/convertDate';
 import { IFetchppRequestBody, IFetchResponseData } from './../../interfaces';
-import { defaultRequest } from './../../constant';
+import { defaultRequest, TOTAL_COUNT } from './../../constant';
 import './index.scss';
 import { useDispatch } from 'react-redux';
 import { setAppInfo } from './../../redux/slices/appInfo.slice';
@@ -163,10 +163,7 @@ const AppInventoryList = () => {
   return (
     <div className='layout-color'>
       <div className='layout'>
-        <AutoCompleteSearch 
-          optionList={appsData?.items?.map( x => { return {value: x.title}})} 
-          handleSearchSelect={handleSearchSelect}
-        />
+        <AutoCompleteSearch isdisable={isLoading} handleSearchSelect={handleSearchSelect} />
         <Table
           loading={isLoading}
           columns={columns}
