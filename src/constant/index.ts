@@ -33,7 +33,8 @@ export const initialState: IAppInfo = {
 	},
 	filters: {
 		contentRatings: [],
-		avails: []
+		avails: [],
+		updatedAt: [],
 	}
 }
 export const TOTAL_COUNT = 492; // fetch api total count

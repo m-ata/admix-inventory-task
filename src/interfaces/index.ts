@@ -38,8 +38,9 @@ export interface IAppInfo {
     filters?: ITableFilters
 }
 export interface ITableFilters {
-    contentRatings?: ITableFileDS[],
-    avails?: ITableFileDS[]
+    contentRatings?: ITableFileDS[];
+    avails?: ITableFileDS[];
+    updatedAt?: ITableFileDS[];
 }
 export interface ITableFileDS {
     field: string;

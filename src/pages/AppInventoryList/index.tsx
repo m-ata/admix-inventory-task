@@ -68,27 +68,37 @@ const AppInventoryList = () => {
         value: val.toString(),
         operator: 'in'
       }
-    })
-    const allUniqueAvails: ITableFileDS[] = handleGTFilterValues('avails', uniqueAvails as ITableFileDS[]);
+    });
+    const uniqueUpdatedAt = apps.map(item => item?.updatedAt)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
+      return {
+        field: 'updatedAt',
+        title: convertDate(val),
+        value: val,
+        operator: 'in'
+      }
+    });
+
+    const allUniqueAvails: ITableFileDS[] = handleGTFilterValues('avails', uniqueAvails as ITableFileDS[], convertAvails);
+    const allUniqueUpdatedAt: ITableFileDS[] = handleGTFilterValues('updatedAt', uniqueUpdatedAt as ITableFileDS[], convertDate);
 
     const uniqueContentRatings = [...uniqueGooglePlayStoreRating, ...uniqueAppStoreInfoRatings];
-    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings, avails: allUniqueAvails}));
+    dispatch(setFilters({...appFilters, contentRatings: uniqueContentRatings, avails: allUniqueAvails, updatedAt: allUniqueUpdatedAt}));
   }
 
   // set all filter values with greater and less than
-  const handleGTFilterValues = (field: string, data: ITableFileDS[]) => {
+  const handleGTFilterValues = (field: string, data: ITableFileDS[], method: Function) => {
     const updatedData: ITableFileDS[] = [];
     data.forEach((d: ITableFileDS) => {
       updatedData.push(d);
       updatedData.push({
         field: field,
-        title: `> ${convertAvails(Number(d.value))}`,
+        title: `> ${method(d.value)}`,
         value: d.value,
         operator: 'gt'
       });
       updatedData.push({
         field: field,
-        title: `< ${convertAvails(Number(d.value))}`,
+        title: `< ${method(d.value)}`,
         value: d.value,
         operator: 'lt'
       });
@@ -184,8 +194,9 @@ const AppInventoryList = () => {
                   updatedFilters.push(googlePlayStorInfo);
                 }
               } else {
-                tableFilters[filter]?.forEach((key: string, index: number, data: string[]) => {
-                  const filterValues = key.split('-');
+                tableFilters[filter]?.forEach((key: string) => {
+                  const filterValues = key.split('?');
+                  console.log('filtervalues => ', filterValues);
                   updatedFilters.push({
                     name:  filterValues[0],
                     value: filterValues[1],
@@ -233,7 +244,7 @@ const AppInventoryList = () => {
       filters: appFilters.avails.map((avail: ITableFileDS) => {
         return {
           text: avail.title,
-          value: `${avail.field}-${avail.value}-${avail.operator}`
+          value: `${avail.field}?${avail.value}?${avail.operator}`
         }
       }),
       render: (avails: number) => <span className='avail-cell'> {avails && convertAvails(avails)} </span>
@@ -250,6 +261,12 @@ const AppInventoryList = () => {
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       sorter: true,
+      filters: appFilters.updatedAt.map((updatedAt: ITableFileDS) => {
+        return {
+          text: updatedAt.title,
+          value: `${updatedAt.field}?${updatedAt.value}?${updatedAt.operator}`
+        }
+      }),
       render: (updatedAt: string) => <span className='date-cell'> {convertDate(updatedAt)} </span>
     },
     {
