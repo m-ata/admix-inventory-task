@@ -17,3 +17,6 @@
 - Redux is used to manage state throughout the application.
 - Utils are created to handle some logic such useSort, useFilters, convertDate, convertAvails.
 - Interfaces are created to handle type checking.
+- For the filters such as Avails, UpdatedAt I am fetching all values from the service, filter unique values and added greater than and less than so that we can apply filters accordingly.
+- Similarly, for the Age (contentRating) filter, I am getting the data from service and filter unique values and populate it.
+- For Categories filter, we have constant values with type googlePlayStoreInfo or appStoreInfo to differentiate.
