@@ -9,7 +9,7 @@ import clsx from 'clsx';
 import './index.scss';
 //custom imports
 import { IAppOutput } from './../../interfaces';
-import { updateEnrichedApp } from './../../api/admixplay.enriched.update';
+import { updateEnrichedApp } from '../../api/admixplay.enrich.update';
 import { CATEGORIES } from '../../constant';
 
 const EditApp = () => {

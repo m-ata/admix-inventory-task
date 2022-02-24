@@ -1,6 +1,6 @@
-import { requestHeader } from './../constant/index';
+import { requestHeader } from '../constant/index';
 import axios, { AxiosResponse } from 'axios';
-import { IAppOutput } from './../interfaces';
+import { IAppOutput } from '../interfaces';
 
 export const updateEnrichedApp = async (id: string, body: IAppOutput) => {
 	try {
