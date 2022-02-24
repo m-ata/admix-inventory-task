@@ -13,6 +13,7 @@ const AutoCompleteSearch = (props: IAutoCompleteSearchProps) => {
 
     const { handleSearchSelect, isDisable } = props;
 
+    //local states
     const [suggestions, setSuggestions] = useState<IAutoCompleteOption[]>([]);
     const [isRequestSend, setRequestSend] = useState<boolean>(false);
 

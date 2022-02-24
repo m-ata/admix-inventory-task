@@ -54,7 +54,8 @@ const AppInventoryList = () => {
     isInitialCall ? setUniqueFilterValues(data.items) : setAppsData(data)
   }
 
-  const setUniqueFilterValues = (apps: IAppOutput[]) => { // set unique values to store for filters
+  // set unique values to store for filters
+  const setUniqueFilterValues = (apps: IAppOutput[]) => {
     const uniqueGooglePlayStoreRating = apps.map(item => item?.googlePlayStoreInfo?.contentRating)?.filter((value, index, self) => value && self.indexOf(value) === index).map(val => {
       return {
         field: 'googlePlayStoreInfo.contentRating',
@@ -137,6 +138,7 @@ const AppInventoryList = () => {
     }
   }
 
+  // table columns
   const columns = [
     {
       title: 'STATUS',

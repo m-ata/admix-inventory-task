@@ -23,6 +23,8 @@ export const useFilters = (tableFilters: any) => {
             value: '' as string [] | string,
             operator: ''
           }
+          // since either googlePlayStorInfo or appStorInfo and name field can't take array of string 
+          // so that's why we need to traverse otherwise it could be generalize my else logic and pass array from filters in table
           if (filter === 'genre' || filter === 'contentRating') {
             const googlePlayStorValues: string[] = [];
             const appStorValues: string[] = [];
