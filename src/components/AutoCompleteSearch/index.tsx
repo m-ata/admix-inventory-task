@@ -44,6 +44,7 @@ const AutoCompleteSearch = (props: IAutoCompleteSearchProps) => {
                 )
             );
         } else { 
+            handleSearchSelect('')
             setSuggestions([]); // manually setting suggestions empty since all the data is coming even passing pageSize: 0
         }
         

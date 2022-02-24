@@ -233,7 +233,12 @@ const AppInventoryList = () => {
     const filtersWithTitle = updatedFilters.find(f => f.name === 'title');
     if (filtersWithTitle) {
       const index = updatedFilters?.indexOf(filtersWithTitle);
-      updatedFilters[index].value = input
+      if (input) {
+        updatedFilters[index].value = input
+      } else {
+        updatedFilters.slice(index, 1);
+      }
+      
     } else {
       updatedFilters.push({
         name: 'title',
