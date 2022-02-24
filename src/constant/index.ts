@@ -13,14 +13,14 @@ export const DEFAULT_APPS_DATA = {
     totalCount: 0
 }
 
-export const requestHeader = {
+export const REQUEST_HEADER = {
 	'Content-Type': 'application/json',
 	'admix-api-key': '2b7123aa-1a2f-4230-9275-7131d0de3fca'
 }
 
 export const EMPTY_IMAGE = 'https://ecdn.teacherspayteachers.com/thumbitem/Blank-Game-Board-3-4468982-1553533522/original-4468982-1.jpg';
 
-export const initialState: IAppInfo = {
+export const INITIAL_STATE: IAppInfo = {
 	appInfo : {
 		title: '',
     	tags: [''],
