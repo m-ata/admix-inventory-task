@@ -9,6 +9,6 @@ export const updateEnrichedApp = async (id: string, body: IAppOutput) => {
 		});
 		return response;
 	} catch (err) {
-		return err;
+		throw err;
 	}
 }

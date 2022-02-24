@@ -9,6 +9,6 @@ export const fetchAdmixPlayInventory = async (body: IFetchppRequestBody) => {
         });
         return response?.data?.data;
       } catch (err) {
-        console.log('err ', err)
+        throw err;
       }
 }
